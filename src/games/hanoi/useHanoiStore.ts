@@ -286,6 +286,7 @@ export const useHanoiStore = create<HanoiState & HanoiActions>()(
                         hintActive: true,
                         hintInfo,
                         hintCount: state.hintCount + 1,
+                        selectedPeg: null, // Clear selection when showing hint
                     });
 
                     // Auto-clear hint after 3 seconds

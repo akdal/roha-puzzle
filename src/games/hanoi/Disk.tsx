@@ -59,22 +59,22 @@ export const Disk = ({
         let bounceOffset = 0;
         if (!isAnimating) {
             if (isSelected) {
-                // Gentle floating bounce for selected disk
-                bounceOffset = Math.sin(time * 4) * 0.08 + 0.15;
+                // Subtle floating for selected disk
+                bounceOffset = Math.sin(time * 3) * 0.03 + 0.08;
             } else if (isHintDisk) {
-                // More energetic bounce for hint disk
-                bounceOffset = Math.sin(time * 5) * 0.12 + 0.2;
+                // Gentle bounce for hint disk
+                bounceOffset = Math.sin(time * 4) * 0.05 + 0.1;
             }
         }
 
         // Update glow ring scale
         if (glowRef.current) {
-            const pulseScale = 1 + Math.sin(time * 4) * 0.1;
+            const pulseScale = 1 + Math.sin(time * 3) * 0.03;
             glowRef.current.scale.set(pulseScale, pulseScale, 1);
         }
 
         if (isAnimating && targetPosition) {
-            const speed = 8;
+            const speed = 16;
             const current = currentPos.current;
 
             if (animationPhase.current === 'up') {
@@ -122,12 +122,12 @@ export const Disk = ({
     const time = clock.elapsedTime;
     const getEmissiveIntensity = () => {
         if (isHintDisk) {
-            // Strong pulse for hint disk
-            return 0.5 + Math.sin(time * 5) * 0.3;
+            // Subtle pulse for hint disk
+            return 0.35 + Math.sin(time * 4) * 0.1;
         }
         if (isSelected) {
-            // Gentle pulse for selected disk
-            return 0.4 + Math.sin(time * 3) * 0.2;
+            // Very subtle pulse for selected disk
+            return 0.25 + Math.sin(time * 3) * 0.05;
         }
         return 0;
     };
@@ -160,7 +160,7 @@ export const Disk = ({
                     <meshBasicMaterial
                         color={isHintDisk ? '#22d3ee' : '#fbbf24'}
                         transparent
-                        opacity={0.4 + Math.sin(time * 4) * 0.2}
+                        opacity={0.3 + Math.sin(time * 3) * 0.05}
                     />
                 </mesh>
             )}

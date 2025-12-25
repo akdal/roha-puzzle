@@ -30,8 +30,8 @@ function PuzzleScene() {
 
     return (
         <>
-            {/* Background */}
-            <color attach="background" args={['#1e1e3f']} />
+            {/* Background - matching homepage */}
+            <color attach="background" args={['#0a1628']} />
 
             {/* Lighting */}
             <ambientLight intensity={0.7} />
