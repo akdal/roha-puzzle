@@ -14,6 +14,8 @@ interface HanoiProps {
 }
 
 function HanoiScene() {
+    const viewResetRequested = useHanoiStore((s) => s.viewResetRequested);
+    const clearViewReset = useHanoiStore((s) => s.clearViewReset);
     const controlsRef = useRef<OrbitControlsImpl>(null);
     const { camera } = useThree();
 
@@ -22,6 +24,15 @@ function HanoiScene() {
         camera.position.copy(DEFAULT_CAMERA_POSITION);
         camera.lookAt(0, 1, 0);
     }, [camera]);
+
+    useEffect(() => {
+        if (viewResetRequested && controlsRef.current) {
+            camera.position.copy(DEFAULT_CAMERA_POSITION);
+            controlsRef.current.target.set(0, 1, 0);
+            controlsRef.current.update();
+            clearViewReset();
+        }
+    }, [viewResetRequested, camera, clearViewReset]);
 
     return (
         <>

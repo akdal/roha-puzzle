@@ -37,6 +37,9 @@ interface HanoiState {
 
     // Settings & records
     leaderboard: LeaderboardEntry[];
+
+    // View reset
+    viewResetRequested: boolean;
 }
 
 interface HanoiActions {
@@ -46,6 +49,8 @@ interface HanoiActions {
     finishAnimation: () => void;
     showHint: () => void;
     clearHint: () => void;
+    requestViewReset: () => void;
+    clearViewReset: () => void;
 }
 
 const createInitialPegs = (diskCount: number): number[][] => {
@@ -160,6 +165,7 @@ export const useHanoiStore = create<HanoiState & HanoiActions>()(
             hintInfo: null,
             hintCount: 0,
             leaderboard: [],
+            viewResetRequested: false,
 
             initGame: (diskCount?: number) => {
                 const count = diskCount ?? get().diskCount;
@@ -295,6 +301,9 @@ export const useHanoiStore = create<HanoiState & HanoiActions>()(
             clearHint: () => {
                 set({ hintActive: false, hintInfo: null });
             },
+
+            requestViewReset: () => set({ viewResetRequested: true }),
+            clearViewReset: () => set({ viewResetRequested: false }),
         }),
         {
             name: 'hanoi-storage',

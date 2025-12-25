@@ -213,7 +213,7 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
               <h2 className="text-lg sm:text-xl font-bold text-white mb-1.5">하노이 탑</h2>
               <p className="text-amber-300/70 text-xs font-medium mb-3">3~7개 원반</p>
               <p className="text-cyan-100/40 text-xs leading-relaxed">
-                모든 원반을 오른쪽으로 옮기세요
+                모든 원반을 하얀 기둥으로 옮기세요
               </p>
             </div>
           </button>

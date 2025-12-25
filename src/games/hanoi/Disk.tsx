@@ -1,8 +1,8 @@
 import { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Mesh, Vector3 } from 'three';
 
-// Disk colors - vibrant rainbow
+// Disk colors - vibrant rainbow (winter-adjusted)
 const DISK_COLORS = [
     '#FF6B6B', // Coral Red
     '#FFA94D', // Bright Orange
@@ -35,9 +35,11 @@ export const Disk = ({
     onAnimationComplete,
 }: DiskProps) => {
     const meshRef = useRef<Mesh>(null);
+    const glowRef = useRef<Mesh>(null);
     const currentPos = useRef(position.clone());
     const animationPhase = useRef<'up' | 'horizontal' | 'down'>('up');
     const liftHeight = 4;
+    const { clock } = useThree();
 
     // Calculate disk dimensions based on size
     const minRadius = 0.4;
@@ -51,19 +53,37 @@ export const Disk = ({
     useFrame((_, delta) => {
         if (!meshRef.current) return;
 
+        const time = clock.elapsedTime;
+
+        // Bounce animation for selected or hint disk
+        let bounceOffset = 0;
+        if (!isAnimating) {
+            if (isSelected) {
+                // Gentle floating bounce for selected disk
+                bounceOffset = Math.sin(time * 4) * 0.08 + 0.15;
+            } else if (isHintDisk) {
+                // More energetic bounce for hint disk
+                bounceOffset = Math.sin(time * 5) * 0.12 + 0.2;
+            }
+        }
+
+        // Update glow ring scale
+        if (glowRef.current) {
+            const pulseScale = 1 + Math.sin(time * 4) * 0.1;
+            glowRef.current.scale.set(pulseScale, pulseScale, 1);
+        }
+
         if (isAnimating && targetPosition) {
             const speed = 8;
             const current = currentPos.current;
 
             if (animationPhase.current === 'up') {
-                // Move up
                 current.y += speed * delta;
                 if (current.y >= liftHeight) {
                     current.y = liftHeight;
                     animationPhase.current = 'horizontal';
                 }
             } else if (animationPhase.current === 'horizontal') {
-                // Move horizontally
                 const dx = targetPosition.x - current.x;
                 const dz = targetPosition.z - current.z;
                 const dist = Math.sqrt(dx * dx + dz * dz);
@@ -77,41 +97,73 @@ export const Disk = ({
                     animationPhase.current = 'down';
                 }
             } else if (animationPhase.current === 'down') {
-                // Move down
                 current.y -= speed * delta;
                 if (current.y <= targetPosition.y) {
                     current.y = targetPosition.y;
-                    animationPhase.current = 'up'; // Reset for next animation
+                    animationPhase.current = 'up';
                     onAnimationComplete?.();
                 }
             }
 
             meshRef.current.position.copy(current);
         } else {
-            // Not animating - snap to position
+            // Not animating - apply bounce offset
             currentPos.current.copy(position);
-            meshRef.current.position.copy(position);
+            meshRef.current.position.set(
+                position.x,
+                position.y + bounceOffset,
+                position.z
+            );
             animationPhase.current = 'up';
         }
     });
 
-    // Pulsing effect for hint disk
+    // Dynamic pulsing emissive intensity
+    const time = clock.elapsedTime;
     const getEmissiveIntensity = () => {
-        if (isHintDisk) return 0.5;
-        if (isSelected) return 0.3;
+        if (isHintDisk) {
+            // Strong pulse for hint disk
+            return 0.5 + Math.sin(time * 5) * 0.3;
+        }
+        if (isSelected) {
+            // Gentle pulse for selected disk
+            return 0.4 + Math.sin(time * 3) * 0.2;
+        }
         return 0;
     };
 
+    const emissiveColor = isHintDisk ? '#22d3ee' : isSelected ? '#ffffff' : '#000000';
+    const showGlow = isSelected || isHintDisk;
+
     return (
-        <mesh ref={meshRef} position={position} castShadow receiveShadow>
-            <cylinderGeometry args={[radius, radius, height, 32]} />
-            <meshStandardMaterial
-                color={color}
-                metalness={0.1}
-                roughness={0.4}
-                emissive={isHintDisk ? '#FFFFFF' : isSelected ? color : '#000000'}
-                emissiveIntensity={getEmissiveIntensity()}
-            />
-        </mesh>
+        <group>
+            {/* Main disk */}
+            <mesh ref={meshRef} position={position} castShadow receiveShadow>
+                <cylinderGeometry args={[radius, radius, height, 32]} />
+                <meshStandardMaterial
+                    color={color}
+                    metalness={0.2}
+                    roughness={0.3}
+                    emissive={emissiveColor}
+                    emissiveIntensity={getEmissiveIntensity()}
+                />
+            </mesh>
+
+            {/* Glow ring under selected/hint disk */}
+            {showGlow && !isAnimating && (
+                <mesh
+                    ref={glowRef}
+                    position={[position.x, 0.08, position.z]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                >
+                    <ringGeometry args={[radius * 0.8, radius * 1.3, 32]} />
+                    <meshBasicMaterial
+                        color={isHintDisk ? '#22d3ee' : '#fbbf24'}
+                        transparent
+                        opacity={0.4 + Math.sin(time * 4) * 0.2}
+                    />
+                </mesh>
+            )}
+        </group>
     );
 };

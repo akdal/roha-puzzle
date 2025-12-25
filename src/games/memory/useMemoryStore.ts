@@ -46,6 +46,9 @@ interface MemoryState {
     hintActive: boolean;
     hintCardIndices: number[]; // indices of cards to highlight
     hintCount: number;
+
+    // View reset
+    viewResetRequested: boolean;
 }
 
 interface MemoryActions {
@@ -56,6 +59,8 @@ interface MemoryActions {
     scramble: () => void;
     showHint: () => void;
     clearHint: () => void;
+    requestViewReset: () => void;
+    clearViewReset: () => void;
 }
 
 const createCards = (gridSize: number): Card[] => {
@@ -115,6 +120,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
             hintActive: false,
             hintCardIndices: [],
             hintCount: 0,
+            viewResetRequested: false,
 
             initGame: (gridSize?: 4 | 5) => {
                 const size = gridSize ?? get().gridSize;
@@ -273,6 +279,9 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
             clearHint: () => {
                 set({ hintActive: false, hintCardIndices: [] });
             },
+
+            requestViewReset: () => set({ viewResetRequested: true }),
+            clearViewReset: () => set({ viewResetRequested: false }),
         }),
         {
             name: 'memory-storage',

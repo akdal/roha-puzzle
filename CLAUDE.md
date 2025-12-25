@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Deployment
 
-**Production Domain**: `3d-puzzle-roha.vercel.app`
+**Production Domain**: `roha-puzzle.vercel.app`
 
-⚠️ **IMPORTANT**: Always deploy to this domain only. Do NOT deploy to other domains like `cube-3d-ten.vercel.app`.
+⚠️ **IMPORTANT**: Always deploy to this domain only.
 
 ```bash
 # Deploy to production

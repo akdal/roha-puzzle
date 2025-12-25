@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Background gradient - night sky -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1628"/>
+      <stop offset="50%" style="stop-color:#0f2937"/>
+      <stop offset="100%" style="stop-color:#1a3a4a"/>
+    </linearGradient>
+
+    <!-- 3D Tree gradients for depth -->
+    <linearGradient id="treeLight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="50%" style="stop-color:#16a34a"/>
+      <stop offset="100%" style="stop-color:#15803d"/>
+    </linearGradient>
+    <linearGradient id="treeDark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#15803d"/>
+      <stop offset="100%" style="stop-color:#166534"/>
+    </linearGradient>
+
+    <!-- Snow glow -->
+    <radialGradient id="snowGlow" cx="50%" cy="100%" r="80%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.15)"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+
+    <!-- Star glow -->
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="50%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="12" fill="url(#bgGrad)"/>
+
+  <!-- Snow ground glow -->
+  <ellipse cx="32" cy="58" rx="28" ry="8" fill="url(#snowGlow)"/>
+
+  <!-- Snowflakes scattered -->
+  <circle cx="10" cy="12" r="1.5" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="54" cy="8" r="1" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="8" cy="35" r="1" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="56" cy="28" r="1.5" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="52" cy="45" r="1" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="12" cy="50" r="1" fill="rgba(255,255,255,0.4)"/>
+
+  <!-- 3D Christmas Tree - Back layer (shadow) -->
+  <polygon points="32,14 44,32 38,32 48,46 20,46 30,32 24,32"
+           fill="#166534" opacity="0.8"/>
+
+  <!-- 3D Christmas Tree - Middle layer -->
+  <polygon points="32,12 42,28 37,28 46,42 18,42 27,28 22,28"
+           fill="url(#treeLight)"/>
+
+  <!-- Tree trunk -->
+  <rect x="28" y="42" width="8" height="8" rx="1" fill="#92400e"/>
+  <rect x="28" y="42" width="4" height="8" rx="1" fill="#a16207"/>
+
+  <!-- Snow on tree -->
+  <ellipse cx="32" cy="16" rx="4" ry="2" fill="rgba(255,255,255,0.7)"/>
+  <ellipse cx="28" cy="24" rx="3" ry="1.5" fill="rgba(255,255,255,0.5)"/>
+  <ellipse cx="36" cy="26" rx="3" ry="1.5" fill="rgba(255,255,255,0.5)"/>
+  <ellipse cx="24" cy="36" rx="4" ry="1.5" fill="rgba(255,255,255,0.4)"/>
+  <ellipse cx="40" cy="38" rx="4" ry="1.5" fill="rgba(255,255,255,0.4)"/>
+
+  <!-- Star on top with glow -->
+  <circle cx="32" cy="10" r="6" fill="url(#starGlow)"/>
+  <polygon points="32,5 33.5,9 38,9 34.5,11.5 36,16 32,13 28,16 29.5,11.5 26,9 30.5,9"
+           fill="#fbbf24"/>
+
+  <!-- Ornaments -->
+  <circle cx="26" cy="30" r="2.5" fill="#ef4444"/>
+  <circle cx="38" cy="32" r="2.5" fill="#3b82f6"/>
+  <circle cx="30" cy="38" r="2.5" fill="#f59e0b"/>
+  <circle cx="36" cy="40" r="2" fill="#ec4899"/>
+
+  <!-- Ornament shine -->
+  <circle cx="25" cy="29" r="0.8" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="37" cy="31" r="0.8" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="29" cy="37" r="0.8" fill="rgba(255,255,255,0.6)"/>
+
+  <!-- Snow ground -->
+  <ellipse cx="32" cy="54" rx="26" ry="4" fill="rgba(255,255,255,0.2)"/>
+</svg>

@@ -57,12 +57,18 @@ npm run lint     # Run ESLint
 
 ## Recent Updates
 
+### Hanoi Tower Visual Improvements (2025-12-25)
+Enhanced visual feedback for disk and peg selection/hints:
+- **Disk bounce animations**: Selected disks float gently, hint disks bounce more energetically
+- **Glow ring effects**: Amber glow for selection, cyan glow for hints
+- **Pulsing emissive animations**: Dynamic lighting on pegs based on state
+- **Color-coded hints**: Gold for source peg, cyan for target peg
+
 ### Hint System (2025-12-25)
 Added comprehensive hint system to all four games:
 - Tower of Hanoi: Recursive optimal solution algorithm
 - Memory Cards: Matching pair finder with visual highlights
 - Slide Puzzle: BFS solver for step-by-step guidance
-- Rubik's Cube: Scramble move reversal system
 
 Hint usage is tracked and displayed in leaderboards alongside time and move counts.
 

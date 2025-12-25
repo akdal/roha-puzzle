@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
+import { Vector3 } from 'three';
 import { PuzzleGame } from './PuzzleGame';
 import { PuzzleUI } from './PuzzleUI';
 import { usePuzzleStore } from './usePuzzleStore';
@@ -9,7 +11,23 @@ interface PuzzleProps {
     onBack: () => void;
 }
 
+const DEFAULT_CAMERA_POSITION = new Vector3(0, 0, 5);
+
 function PuzzleScene() {
+    const viewResetRequested = usePuzzleStore((s) => s.viewResetRequested);
+    const clearViewReset = usePuzzleStore((s) => s.clearViewReset);
+    const controlsRef = useRef<OrbitControlsImpl>(null);
+    const { camera } = useThree();
+
+    useEffect(() => {
+        if (viewResetRequested && controlsRef.current) {
+            camera.position.copy(DEFAULT_CAMERA_POSITION);
+            controlsRef.current.target.set(0, 0, 0);
+            controlsRef.current.update();
+            clearViewReset();
+        }
+    }, [viewResetRequested, camera, clearViewReset]);
+
     return (
         <>
             {/* Background */}
@@ -24,15 +42,18 @@ function PuzzleScene() {
             {/* Game */}
             <PuzzleGame />
 
-            {/* Controls - limited for 2D puzzle */}
+            {/* Controls - limited for 2D puzzle (front view default, limited rotation) */}
             <OrbitControls
+                ref={controlsRef}
                 makeDefault
                 enableDamping
                 dampingFactor={0.05}
                 minDistance={4}
-                maxDistance={10}
-                minPolarAngle={Math.PI / 3}
-                maxPolarAngle={Math.PI / 2.5}
+                maxDistance={8}
+                minPolarAngle={Math.PI / 2.5}
+                maxPolarAngle={Math.PI / 1.8}
+                minAzimuthAngle={-Math.PI / 6}
+                maxAzimuthAngle={Math.PI / 6}
                 enablePan={false}
             />
         </>

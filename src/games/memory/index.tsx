@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
+import { Vector3 } from 'three';
 import { MemoryGame } from './MemoryGame';
 import { MemoryUI } from './MemoryUI';
 import { useMemoryStore } from './useMemoryStore';
@@ -9,7 +11,23 @@ interface MemoryProps {
     onBack: () => void;
 }
 
+const DEFAULT_CAMERA_POSITION = new Vector3(0, 0, 6);
+
 function MemoryScene() {
+    const viewResetRequested = useMemoryStore((s) => s.viewResetRequested);
+    const clearViewReset = useMemoryStore((s) => s.clearViewReset);
+    const controlsRef = useRef<OrbitControlsImpl>(null);
+    const { camera } = useThree();
+
+    useEffect(() => {
+        if (viewResetRequested && controlsRef.current) {
+            camera.position.copy(DEFAULT_CAMERA_POSITION);
+            controlsRef.current.target.set(0, 0, 0);
+            controlsRef.current.update();
+            clearViewReset();
+        }
+    }, [viewResetRequested, camera, clearViewReset]);
+
     return (
         <>
             {/* Winter night background */}
@@ -24,15 +42,18 @@ function MemoryScene() {
             {/* Game */}
             <MemoryGame />
 
-            {/* Controls */}
+            {/* Controls - front view default, limited rotation */}
             <OrbitControls
+                ref={controlsRef}
                 makeDefault
                 enableDamping
                 dampingFactor={0.05}
                 minDistance={4}
-                maxDistance={12}
-                minPolarAngle={Math.PI / 4}
-                maxPolarAngle={Math.PI / 2.2}
+                maxDistance={10}
+                minPolarAngle={Math.PI / 2.5}
+                maxPolarAngle={Math.PI / 1.8}
+                minAzimuthAngle={-Math.PI / 6}
+                maxAzimuthAngle={Math.PI / 6}
                 enablePan={false}
             />
         </>

@@ -30,6 +30,9 @@ interface PuzzleState {
 
     // Settings & records
     leaderboard: LeaderboardEntry[];
+
+    // View reset
+    viewResetRequested: boolean;
 }
 
 interface PuzzleActions {
@@ -39,6 +42,8 @@ interface PuzzleActions {
     scramble: () => void;
     showHint: () => void;
     clearHint: () => void;
+    requestViewReset: () => void;
+    clearViewReset: () => void;
 }
 
 const createSolvedState = (gridSize: number): number[] => {
@@ -160,6 +165,7 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
             hintTileIndex: null,
             hintCount: 0,
             leaderboard: [],
+            viewResetRequested: false,
 
             initGame: (gridSize?: 2 | 3 | 4) => {
                 const size = gridSize ?? get().gridSize;
@@ -278,6 +284,9 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
             clearHint: () => {
                 set({ hintActive: false, hintTileIndex: null });
             },
+
+            requestViewReset: () => set({ viewResetRequested: true }),
+            clearViewReset: () => set({ viewResetRequested: false }),
         }),
         {
             name: 'puzzle-storage',

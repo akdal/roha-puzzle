@@ -13,7 +13,6 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
         moveCount,
         gridSize,
         setGridSize,
-        initGame,
         scramble,
         leaderboard,
         cards,
@@ -22,6 +21,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
         hintActive,
         flippedCards,
         isProcessing,
+        requestViewReset,
     } = useMemoryStore();
 
     const [showSettings, setShowSettings] = useState(false);
@@ -82,7 +82,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                 <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20">
                     <div className="text-4xl mb-2">🎄</div>
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300 mb-4">
-                        완료!
+                        성공!
                     </h1>
                     <div className="text-2xl mb-2 text-cyan-100">
                         시간: <span className="font-mono text-yellow-300">{timeDisplay}</span>초
@@ -97,9 +97,9 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                     <div className="flex flex-col gap-3">
                         <button
                             onClick={() => scramble()}
-                            className="px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white text-lg rounded-full font-bold hover:from-red-500 hover:to-red-400 transition shadow-lg"
+                            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg"
                         >
-                            다시 하기
+                            🎮 새 게임
                         </button>
                         <button
                             onClick={() => setShowLeaderboard(true)}
@@ -181,10 +181,11 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                             <span className="text-xl sm:text-2xl">←</span>
                         </button>
                         <button
-                            onClick={() => initGame()}
+                            onClick={() => requestViewReset()}
                             className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition border-r border-cyan-500/20"
+                            title="3D 뷰 초기화"
                         >
-                            <span className="text-xl sm:text-2xl">↺</span>
+                            <span className="text-xl sm:text-2xl">🔄</span>
                         </button>
                         <button
                             onClick={showHint}
@@ -213,7 +214,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                                         }}
                                         className={`flex-1 py-2 text-sm font-bold rounded-lg transition ${
                                             gridSize === 4
-                                                ? 'bg-red-500 text-white'
+                                                ? 'bg-cyan-500 text-white'
                                                 : 'bg-cyan-900/50 text-cyan-300'
                                         }`}
                                     >
@@ -226,7 +227,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                                         }}
                                         className={`flex-1 py-2 text-sm font-bold rounded-lg transition ${
                                             gridSize === 5
-                                                ? 'bg-red-500 text-white'
+                                                ? 'bg-cyan-500 text-white'
                                                 : 'bg-cyan-900/50 text-cyan-300'
                                         }`}
                                     >
@@ -234,14 +235,6 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                                     </button>
                                 </div>
                             </div>
-
-                            {/* New Game */}
-                            <button
-                                onClick={() => { scramble(); setShowSettings(false); }}
-                                className="w-full py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-lg text-sm"
-                            >
-                                🎮 새 게임
-                            </button>
 
                             {/* Leaderboard */}
                             <button
@@ -309,21 +302,18 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                 </div>
             )}
 
-            {/* Bottom - Scramble button */}
-            <div className="flex flex-col items-center gap-3 pointer-events-auto mb-6 sm:mb-8">
-                <div className="flex items-center gap-2 text-cyan-300/70 text-sm sm:text-base">
-                    <span className="bg-cyan-500/10 px-3 py-1 rounded-full font-bold border border-cyan-500/20">
-                        {gridSize}×{gridSize}
-                    </span>
+            {/* Bottom - Small New Game Button */}
+            <div className="flex flex-col items-center gap-2 pointer-events-auto mb-4">
+                <div className="flex items-center gap-2 text-cyan-300/70 text-xs">
+                    <span className="bg-cyan-500/10 px-2 py-0.5 rounded-full font-bold border border-cyan-500/20">{gridSize}×{gridSize}</span>
                     <span>•</span>
                     <span>횟수: {moveCount}</span>
                 </div>
-
                 <button
                     onClick={() => scramble()}
-                    className="px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-red-600 to-green-600 text-white text-lg sm:text-xl font-bold rounded-2xl shadow-lg hover:from-red-500 hover:to-green-500 transition transform hover:scale-105"
+                    className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-bold rounded-full shadow-lg hover:from-cyan-400 hover:to-blue-400 transition"
                 >
-                    🎄 새 게임
+                    🎮 새 게임
                 </button>
             </div>
 
