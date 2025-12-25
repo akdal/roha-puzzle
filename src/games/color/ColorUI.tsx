@@ -422,7 +422,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
             </div>
 
             <div className="absolute bottom-3 left-4 sm:bottom-4 sm:left-6 text-cyan-400/50 text-xs sm:text-sm">
-                🎯 팔레트에서 색을 선택 → 섞기! • 목표: {minMoves}회 안에 95% 일치
+                🎯 색 선택 → 다시 클릭하면 바로 섞기! (더블클릭도 가능) • 목표: {minMoves}회 안에 95% 일치
             </div>
         </div>
     );

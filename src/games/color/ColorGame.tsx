@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Mesh, Group } from 'three';
 import { useColorStore, rgbToHex } from './useColorStore';
@@ -70,12 +70,14 @@ interface ColorBallProps {
     isSelected: boolean;
     isHint: boolean;
     onClick: () => void;
+    onMix: () => void;
     index: number;
 }
 
-const ColorBall = ({ color, position, isSelected, isHint, onClick, index }: ColorBallProps) => {
+const ColorBall = ({ color, position, isSelected, isHint, onClick, onMix, index }: ColorBallProps) => {
     const meshRef = useRef<Mesh>(null);
     const glowRef = useRef<Mesh>(null);
+    const lastClickTime = useRef<number>(0);
 
     useFrame((state) => {
         if (!meshRef.current) return;
@@ -90,6 +92,29 @@ const ColorBall = ({ color, position, isSelected, isHint, onClick, index }: Colo
             glowRef.current.scale.setScalar(pulse);
         }
     });
+
+    const handleClick = useCallback((e: { stopPropagation: () => void }) => {
+        e.stopPropagation();
+        const now = Date.now();
+        const timeSinceLastClick = now - lastClickTime.current;
+
+        // Double click detection (within 300ms)
+        if (timeSinceLastClick < 300) {
+            onMix();
+            lastClickTime.current = 0;
+            return;
+        }
+
+        // If already selected, mix immediately
+        if (isSelected) {
+            onMix();
+            return;
+        }
+
+        // First click - just select
+        onClick();
+        lastClickTime.current = now;
+    }, [isSelected, onClick, onMix]);
 
     return (
         <group position={position}>
@@ -114,10 +139,7 @@ const ColorBall = ({ color, position, isSelected, isHint, onClick, index }: Colo
             {/* Main ball */}
             <mesh
                 ref={meshRef}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onClick();
-                }}
+                onClick={handleClick}
                 onPointerOver={(e) => {
                     e.stopPropagation();
                     document.body.style.cursor = 'pointer';
@@ -192,6 +214,7 @@ export const ColorGame = () => {
         availableColors,
         selectedColor,
         selectColor,
+        mixColor,
         hintColorIndex,
     } = useColorStore();
 
@@ -263,6 +286,10 @@ export const ColorGame = () => {
                         isSelected={selectedColor === index}
                         isHint={hintColorIndex === index}
                         onClick={() => selectColor(index)}
+                        onMix={() => {
+                            selectColor(index);
+                            mixColor();
+                        }}
                         index={index}
                     />
                 ))}
