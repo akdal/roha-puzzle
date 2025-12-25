@@ -46,9 +46,11 @@ function LightsScene() {
                 enableDamping
                 dampingFactor={0.05}
                 minDistance={4}
-                maxDistance={12}
-                minPolarAngle={Math.PI / 3}
-                maxPolarAngle={Math.PI / 1.5}
+                maxDistance={10}
+                minPolarAngle={Math.PI / 2.5}
+                maxPolarAngle={Math.PI / 1.8}
+                minAzimuthAngle={-Math.PI / 6}
+                maxAzimuthAngle={Math.PI / 6}
                 enablePan={false}
             />
         </>
