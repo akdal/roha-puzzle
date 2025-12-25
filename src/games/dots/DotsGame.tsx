@@ -31,10 +31,10 @@ export const DotsGame = () => {
 
     return (
         <group scale={gameScale}>
-            {/* Board base */}
+            {/* Board base - XY plane */}
             <RoundedBox
-                args={[boardSize + 0.4, 0.1, boardSize + 0.4]}
-                position={[0, -0.1, 0]}
+                args={[boardSize + 0.4, boardSize + 0.4, 0.1]}
+                position={[0, 0, -0.1]}
                 radius={0.05}
                 smoothness={4}
             >
@@ -45,10 +45,10 @@ export const DotsGame = () => {
                 />
             </RoundedBox>
 
-            {/* Grid background */}
+            {/* Grid background - XY plane */}
             <RoundedBox
-                args={[boardSize + 0.2, 0.05, boardSize + 0.2]}
-                position={[0, -0.05, 0]}
+                args={[boardSize + 0.2, boardSize + 0.2, 0.05]}
+                position={[0, 0, -0.05]}
                 radius={0.03}
                 smoothness={4}
             >
@@ -59,29 +59,29 @@ export const DotsGame = () => {
                 />
             </RoundedBox>
 
-            {/* Dots (corners) */}
+            {/* Dots (corners) - XY plane: x = col, y = -row (inverted for top-down) */}
             {Array.from({ length: gridSize }, (_, row) =>
                 Array.from({ length: gridSize }, (_, col) => (
                     <Dot
                         key={`dot-${row}-${col}`}
                         position={[
                             col * cellSize - gridOffset,
+                            gridOffset - row * cellSize,
                             0.1,
-                            row * cellSize - gridOffset,
                         ]}
                     />
                 ))
             )}
 
-            {/* Horizontal lines */}
+            {/* Horizontal lines - XY plane */}
             {horizontalLines.map((rowLines, row) =>
                 rowLines.map((owner, col) => (
                     <Line
                         key={`h-${row}-${col}`}
                         position={[
                             col * cellSize - gridOffset + cellSize / 2,
+                            gridOffset - row * cellSize,
                             0.05,
-                            row * cellSize - gridOffset,
                         ]}
                         isHorizontal={true}
                         owner={owner}
@@ -91,15 +91,15 @@ export const DotsGame = () => {
                 ))
             )}
 
-            {/* Vertical lines */}
+            {/* Vertical lines - XY plane */}
             {verticalLines.map((rowLines, row) =>
                 rowLines.map((owner, col) => (
                     <Line
                         key={`v-${row}-${col}`}
                         position={[
                             col * cellSize - gridOffset,
+                            gridOffset - row * cellSize - cellSize / 2,
                             0.05,
-                            row * cellSize - gridOffset + cellSize / 2,
                         ]}
                         isHorizontal={false}
                         owner={owner}
@@ -109,7 +109,7 @@ export const DotsGame = () => {
                 ))
             )}
 
-            {/* Completed boxes */}
+            {/* Completed boxes - XY plane */}
             {boxes.map((rowBoxes, row) =>
                 rowBoxes.map((owner, col) =>
                     owner !== null ? (
@@ -117,8 +117,8 @@ export const DotsGame = () => {
                             key={`box-${row}-${col}`}
                             position={[
                                 col * cellSize - gridOffset + cellSize / 2,
+                                gridOffset - row * cellSize - cellSize / 2,
                                 0.03,
-                                row * cellSize - gridOffset + cellSize / 2,
                             ]}
                             owner={owner}
                             isNew={isNewBox(row, col)}

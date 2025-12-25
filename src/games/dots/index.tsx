@@ -11,8 +11,8 @@ interface DotsProps {
     onBack: () => void;
 }
 
-// Top-down view (looking straight down at the board)
-const DEFAULT_CAMERA_POSITION = new Vector3(0, 8, 0.1);
+// Front view (XY plane) - same as other puzzle games
+const DEFAULT_CAMERA_POSITION = new Vector3(0, 0, 8);
 
 function DotsScene() {
     const viewResetRequested = useDotsStore((s) => s.viewResetRequested);
@@ -31,16 +31,16 @@ function DotsScene() {
 
     return (
         <>
-            {/* Lighting - winter mood */}
+            {/* Lighting - winter mood - adjusted for front view */}
             <ambientLight intensity={0.5} color="#b4d7ff" />
             <directionalLight position={[5, 10, 5]} intensity={0.6} color="#fff5e6" />
             <directionalLight position={[-5, 5, 5]} intensity={0.3} color="#a8d8ff" />
-            <pointLight position={[0, 5, 0]} intensity={0.4} color="#ffebcd" />
+            <pointLight position={[0, 0, 5]} intensity={0.4} color="#ffebcd" />
 
             {/* Game */}
             <DotsGame />
 
-            {/* Controls - limited rotation for top-down view */}
+            {/* Controls - limited rotation for front view */}
             <OrbitControls
                 ref={controlsRef}
                 makeDefault
@@ -48,8 +48,10 @@ function DotsScene() {
                 dampingFactor={0.05}
                 minDistance={5}
                 maxDistance={12}
-                minPolarAngle={0}
-                maxPolarAngle={Math.PI / 2.5}
+                minPolarAngle={Math.PI / 2.5}
+                maxPolarAngle={Math.PI / 1.8}
+                minAzimuthAngle={-Math.PI / 6}
+                maxAzimuthAngle={Math.PI / 6}
                 enablePan={false}
             />
         </>
@@ -70,7 +72,7 @@ export const Dots = ({ onBack }: DotsProps) => {
         <div className="w-full h-full relative game-screen bg-gradient-to-b from-[#0a1628] via-[#0f2937] to-[#1a3a4a]">
             <DotsUI onBack={onBack} />
             <Canvas
-                camera={{ position: [0, 8, 0.1], fov: 50 }}
+                camera={{ position: [0, 0, 8], fov: 50 }}
                 gl={{ alpha: true }}
                 style={{ background: 'transparent' }}
             >

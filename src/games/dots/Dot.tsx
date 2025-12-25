@@ -12,8 +12,8 @@ export const Dot = ({ position }: DotProps) => {
 
     useFrame((state) => {
         if (meshRef.current) {
-            // Subtle floating animation
-            meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2 + position[0] + position[2]) * 0.02;
+            // Subtle floating animation - XY plane: animate Z (depth)
+            meshRef.current.position.z = position[2] + Math.sin(state.clock.elapsedTime * 2 + position[0] + position[1]) * 0.02;
         }
     });
 

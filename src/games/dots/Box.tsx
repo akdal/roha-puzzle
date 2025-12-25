@@ -29,8 +29,9 @@ export const Box = ({ position, owner, isNew }: BoxProps) => {
 
     return (
         <group ref={groupRef} position={position} scale={isNew ? 0 : 1}>
+            {/* XY plane: width, height, thin depth */}
             <RoundedBox
-                args={[size, 0.05, size]}
+                args={[size, size, 0.05]}
                 radius={0.02}
                 smoothness={4}
             >
@@ -44,9 +45,9 @@ export const Box = ({ position, owner, isNew }: BoxProps) => {
                     opacity={0.8}
                 />
             </RoundedBox>
-            {/* Glow effect */}
+            {/* Glow effect - XY plane: light in front (Z) */}
             <pointLight
-                position={[0, 0.3, 0]}
+                position={[0, 0, 0.3]}
                 color={color}
                 intensity={0.3}
                 distance={1.5}

@@ -26,7 +26,7 @@ export const Line = ({ position, isHorizontal, owner, onClick, disabled }: LineP
 
     const length = 0.8;
     const thickness = 0.08;
-    const height = 0.1;
+    const depth = 0.1;
 
     const handleClick = () => {
         if (!owner && !disabled) {
@@ -55,7 +55,7 @@ export const Line = ({ position, isHorizontal, owner, onClick, disabled }: LineP
     return (
         <RoundedBox
             ref={meshRef}
-            args={isHorizontal ? [length, height, thickness] : [thickness, height, length]}
+            args={isHorizontal ? [length, thickness, depth] : [thickness, length, depth]}
             position={position}
             radius={0.02}
             smoothness={4}
