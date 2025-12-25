@@ -375,7 +375,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                         onClick={() => resetMix()}
                         className="px-6 py-3 text-sm font-bold rounded-full shadow-lg transition bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400"
                     >
-                        🔃 처음으로
+                        🔃 색 초기화
                     </button>
                 </div>
             </div>
