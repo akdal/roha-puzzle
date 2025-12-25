@@ -107,9 +107,11 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             className="group bg-gradient-to-br from-red-500/20 to-orange-500/20 hover:from-red-500/40 hover:to-orange-500/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-8 transition-all hover:scale-105 hover:shadow-2xl"
           >
             <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">🎲</div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Rubik's Cube</h2>
-            <p className="text-orange-200 text-sm">2×2 & 3×3 cubes</p>
-            <p className="text-white/50 text-xs mt-2">Drag to rotate faces</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">루빅스 큐브</h2>
+            <p className="text-orange-200 text-sm">2×2 & 3×3</p>
+            <p className="text-white/70 text-xs mt-3 leading-relaxed">
+              🎯 모든 면의 색상을 맞추세요
+            </p>
           </button>
 
           {/* Hanoi Tower */}
@@ -118,9 +120,11 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             className="group bg-gradient-to-br from-amber-500/20 to-yellow-500/20 hover:from-amber-500/40 hover:to-yellow-500/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-8 transition-all hover:scale-105 hover:shadow-2xl"
           >
             <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">🗼</div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Hanoi Tower</h2>
-            <p className="text-yellow-200 text-sm">3-7 disks</p>
-            <p className="text-white/50 text-xs mt-2">Click to move disks</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">하노이 탑</h2>
+            <p className="text-yellow-200 text-sm">3~7개 원반</p>
+            <p className="text-white/70 text-xs mt-3 leading-relaxed">
+              🎯 모든 원반을 오른쪽으로 옮기세요
+            </p>
           </button>
 
           {/* Slide Puzzle */}
@@ -129,9 +133,11 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             className="group bg-gradient-to-br from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/40 hover:to-blue-500/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-8 transition-all hover:scale-105 hover:shadow-2xl"
           >
             <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">🧩</div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Slide Puzzle</h2>
-            <p className="text-cyan-200 text-sm">3×3 & 4×4 grids</p>
-            <p className="text-white/50 text-xs mt-2">Slide tiles to solve</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">슬라이드 퍼즐</h2>
+            <p className="text-cyan-200 text-sm">3×3 & 4×4</p>
+            <p className="text-white/70 text-xs mt-3 leading-relaxed">
+              🎯 숫자를 순서대로 정렬하세요
+            </p>
           </button>
         </div>
       </div>

@@ -313,7 +313,7 @@ export const UI = ({ onBack }: UIProps) => {
             </div>
 
             <div className="absolute bottom-3 left-4 sm:bottom-4 sm:left-6 text-white/50 text-xs sm:text-sm">
-                Drag faces to rotate • Background to orbit
+                🎯 모든 면의 색상을 맞추세요 • 드래그로 회전
             </div>
         </div>
     );

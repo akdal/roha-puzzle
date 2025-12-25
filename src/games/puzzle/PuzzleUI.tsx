@@ -252,7 +252,7 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
             </div>
 
             <div className="absolute bottom-3 left-4 sm:bottom-4 sm:left-6 text-white/50 text-xs sm:text-sm">
-                Click tiles to slide • Arrange 1 to {gridSize * gridSize - 1}
+                🎯 1~{gridSize * gridSize - 1}을 순서대로 정렬하세요 • 클릭으로 슬라이드
             </div>
         </div>
     );
