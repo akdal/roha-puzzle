@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { BoxGeometry, Quaternion, MeshStandardMaterial } from 'three';
+import { BoxGeometry, Quaternion, MeshPhysicalMaterial } from 'three';
 import type { ThreeEvent } from '@react-three/fiber';
 
 interface CubieProps {
@@ -11,18 +11,31 @@ interface CubieProps {
     onPointerUp?: (e: ThreeEvent<PointerEvent>) => void;
 }
 
+// Vibrant, bright colors
 const COLORS = {
-    U: '#FFFFFF',
-    D: '#FFD500',
-    R: '#B90000',
-    L: '#FF5800',
-    F: '#009E60',
-    B: '#0051BA',
-    CORE: '#1a1a1a'
+    U: '#FFFFFF',  // White - top
+    D: '#FFEB3B',  // Bright Yellow - bottom
+    R: '#F44336',  // Bright Red - right
+    L: '#FF9800',  // Bright Orange - left
+    F: '#4CAF50',  // Bright Green - front
+    B: '#2196F3',  // Bright Blue - back
+    CORE: '#212121' // Dark gray core
 };
 
 // Shared geometry for all cubies
-const boxGeometry = new BoxGeometry(0.95, 0.95, 0.95);
+const boxGeometry = new BoxGeometry(0.93, 0.93, 0.93);
+
+// Material settings for glossy plastic look
+const createMaterial = (color: string, isCore: boolean) => {
+    return new MeshPhysicalMaterial({
+        color,
+        metalness: 0.0,
+        roughness: isCore ? 0.6 : 0.15,
+        clearcoat: isCore ? 0 : 0.8,
+        clearcoatRoughness: 0.2,
+        reflectivity: 0.5,
+    });
+};
 
 export const Cubie = ({
     position,
@@ -39,12 +52,12 @@ export const Cubie = ({
     // Create materials array for 6 faces
     // BoxGeometry face order: +X, -X, +Y, -Y, +Z, -Z
     const materials = useMemo(() => [
-        new MeshStandardMaterial({ color: ox === 1 ? COLORS.R : COLORS.CORE }),   // Right (+X)
-        new MeshStandardMaterial({ color: ox === -1 ? COLORS.L : COLORS.CORE }),  // Left (-X)
-        new MeshStandardMaterial({ color: oy === 1 ? COLORS.U : COLORS.CORE }),   // Up (+Y)
-        new MeshStandardMaterial({ color: oy === -1 ? COLORS.D : COLORS.CORE }),  // Down (-Y)
-        new MeshStandardMaterial({ color: oz === 1 ? COLORS.F : COLORS.CORE }),   // Front (+Z)
-        new MeshStandardMaterial({ color: oz === -1 ? COLORS.B : COLORS.CORE }),  // Back (-Z)
+        createMaterial(ox === 1 ? COLORS.R : COLORS.CORE, ox !== 1),   // Right (+X)
+        createMaterial(ox === -1 ? COLORS.L : COLORS.CORE, ox !== -1), // Left (-X)
+        createMaterial(oy === 1 ? COLORS.U : COLORS.CORE, oy !== 1),   // Up (+Y)
+        createMaterial(oy === -1 ? COLORS.D : COLORS.CORE, oy !== -1), // Down (-Y)
+        createMaterial(oz === 1 ? COLORS.F : COLORS.CORE, oz !== 1),   // Front (+Z)
+        createMaterial(oz === -1 ? COLORS.B : COLORS.CORE, oz !== -1), // Back (-Z)
     ], [ox, oy, oz]);
 
     return (

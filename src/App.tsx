@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Environment } from '@react-three/drei';
 import { Cube } from './components/Cube';
 import { UI } from './components/UI';
 import { GameBackground } from './components/GameBackground';
@@ -9,15 +9,41 @@ function App() {
     <div className="w-full h-full relative">
       <UI />
 
-      <Canvas camera={{ position: [6, 6, 6], fov: 45 }}>
+      <Canvas camera={{ position: [5, 5, 5], fov: 50 }} shadows>
         <GameBackground />
-        <ambientLight intensity={0.6} />
-        <pointLight position={[10, 10, 10]} intensity={0.8} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+
+        {/* Ambient light for base illumination */}
+        <ambientLight intensity={0.4} />
+
+        {/* Key light - main light source */}
+        <directionalLight
+          position={[5, 8, 5]}
+          intensity={1.2}
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+        />
+
+        {/* Fill light - softer, from opposite side */}
+        <directionalLight
+          position={[-5, 3, -5]}
+          intensity={0.4}
+        />
+
+        {/* Rim light - adds depth */}
+        <pointLight position={[0, -5, 0]} intensity={0.3} color="#4fc3f7" />
+
+        {/* Environment for realistic reflections */}
+        <Environment preset="city" />
 
         <Cube />
 
-        <OrbitControls makeDefault />
+        <OrbitControls
+          makeDefault
+          enableDamping
+          dampingFactor={0.05}
+          minDistance={4}
+          maxDistance={15}
+        />
       </Canvas>
     </div>
   );
