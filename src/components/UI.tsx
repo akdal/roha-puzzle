@@ -13,7 +13,9 @@ export const UI = () => {
         theme,
         setTheme,
         invertControls,
-        toggleInvertControls
+        toggleInvertControls,
+        orbitLocked,
+        toggleOrbitLock
     } = useStore();
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -110,6 +112,17 @@ export const UI = () => {
                         }`}
                     >
                         {invertControls ? '↔ Inverted' : '↔ Natural'}
+                    </button>
+
+                    <button
+                        onClick={toggleOrbitLock}
+                        className={`mt-2 w-full text-xs p-1.5 rounded border transition ${
+                            orbitLocked
+                                ? 'bg-red-600 border-red-500 text-white'
+                                : 'bg-gray-800 border-gray-600 text-gray-300'
+                        }`}
+                    >
+                        {orbitLocked ? '🔒 Orbit Locked' : '🔓 Orbit Free'}
                     </button>
                 </div>
 

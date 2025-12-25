@@ -7,6 +7,7 @@ import { useStore } from './store/useStore';
 
 function Scene() {
   const isDraggingCube = useStore((s) => s.isDraggingCube);
+  const orbitLocked = useStore((s) => s.orbitLocked);
 
   return (
     <>
@@ -43,7 +44,7 @@ function Scene() {
         dampingFactor={0.05}
         minDistance={4}
         maxDistance={15}
-        enabled={!isDraggingCube}
+        enabled={!isDraggingCube && !orbitLocked}
       />
     </>
   );
