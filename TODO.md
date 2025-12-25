@@ -2,6 +2,86 @@
 
 ## 완료된 작업 (Completed Tasks)
 
+### 2025-12-25: Responsive Viewport Scaling & Datetime Display
+
+**목표 (Goal)**: 모바일 오버플로우 이슈 해결을 위한 반응형 뷰포트 스케일링 및 시간 표시 기능 추가
+
+**구현 내용 (Implementation)**:
+
+#### Responsive Viewport Hook
+- **`useResponsiveViewport.ts` 신규 훅 생성**:
+  - 뷰포트 종횡비 기반 자동 카메라 스케일링
+  - 모바일/태블릿/데스크톱 환경에서 3D 씬이 화면 밖으로 넘치지 않도록 조정
+  - 세로/가로 모드 모두 최적화된 시야각 제공
+  - Three.js OrthographicCamera zoom 자동 계산
+  - window resize 이벤트 리스닝으로 동적 반응
+
+- **5개 게임에 적용**:
+  - `src/games/game2048/Game2048.tsx`
+  - `src/games/dots/DotsGame.tsx`
+  - `src/games/puzzle/PuzzleGame.tsx`
+  - `src/games/memory/MemoryGame.tsx`
+  - `src/games/lights/LightsGame.tsx`
+
+#### Datetime Display Features
+- **메인 메뉴 시계 추가 (App.tsx)**:
+  - 실시간 날짜/시간 표시 (YYYY.MM.DD 요일 HH:MM:SS 형식)
+  - 1초마다 자동 업데이트
+  - 메뉴 하단에 배치
+  - 한국어 요일 표시 (월, 화, 수, 목, 금, 토, 일)
+
+- **전체 게임 리더보드에 날짜/시간 표시**:
+  - 루빅스 큐브 (UI.tsx)
+  - 하노이 탑 (HanoiUI.tsx)
+  - 슬라이드 퍼즐 (PuzzleUI.tsx)
+  - 메모리 카드 (MemoryUI.tsx)
+  - 트리 라이트 (LightsUI.tsx)
+  - 컬러 믹스 (ColorUI.tsx)
+  - 2048 (Game2048UI.tsx)
+  - 라인 커넥트 (DotsUI.tsx)
+  - 리더보드 항목에 날짜 정보 추가 (월.일 형식)
+
+#### Code Improvements
+- **App.tsx**:
+  - 불필요한 useMemo import 제거
+  - React import 통합
+
+- **Game2048UI.tsx**:
+  - 리더보드에 날짜 표시 강화
+  - 레이아웃 정리
+
+**결과 (Result)**:
+- 모바일 환경에서 3D 게임 요소가 화면 밖으로 벗어나는 문제 완전 해결
+- 모든 화면 크기에서 최적화된 뷰포트 제공
+- 재사용 가능한 responsive viewport hook으로 향후 새 게임에도 쉽게 적용 가능
+- 사용자에게 날짜/시간 정보 제공으로 컨텍스트 향상
+- 리더보드에서 기록 달성 시점 확인 가능
+
+**배포 정보 (Deployment)**:
+- 커밋: 73708fa
+- 배포 URL: https://roha-puzzle.vercel.app
+- 배포 ID: 4DgD6tBq4ZxPM4PF96ew4UjywddX
+- 배포 시각: 2025-12-25
+
+**관련 파일 (Related Files)**:
+- `/Users/hwijin/Projects/roha-puzzle/src/hooks/useResponsiveViewport.ts` (신규)
+- `/Users/hwijin/Projects/roha-puzzle/src/App.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/components/UI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/game2048/Game2048.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/game2048/Game2048UI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/DotsGame.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/DotsUI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/puzzle/PuzzleGame.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/puzzle/PuzzleUI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/memory/MemoryGame.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/memory/MemoryUI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/lights/LightsGame.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/lights/LightsUI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/color/ColorUI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/hanoi/HanoiUI.tsx`
+
+---
+
 ### 2025-12-25: NEW Badges & 2048 Mobile UX Improvements
 
 **목표 (Goal)**: 신규 게임에 NEW 배지 추가 및 2048 게임 모바일 사용성 개선
