@@ -2,8 +2,7 @@ import { RoundedBox } from '@react-three/drei';
 import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Mesh } from 'three';
-
-type Player = 1 | 2;
+import { getPlayerColor, type Player } from './constants';
 
 interface LineProps {
     position: [number, number, number];
@@ -12,10 +11,6 @@ interface LineProps {
     onClick: () => void;
     disabled: boolean;
 }
-
-const getPlayerColor = (player: Player): string => {
-    return player === 1 ? '#22d3ee' : '#f472b6'; // cyan for P1, pink for P2
-};
 
 export const Line = ({ position, isHorizontal, owner, onClick, disabled }: LineProps) => {
     const meshRef = useRef<Mesh>(null);
@@ -39,6 +34,18 @@ export const Line = ({ position, isHorizontal, owner, onClick, disabled }: LineP
         }
     };
 
+    const handlePointerEnter = () => {
+        if (!disabled && !owner) {
+            setHovered(true);
+            document.body.style.cursor = 'pointer';
+        }
+    };
+
+    const handlePointerLeave = () => {
+        setHovered(false);
+        document.body.style.cursor = 'default';
+    };
+
     const color = owner
         ? getPlayerColor(owner)
         : hovered && !disabled
@@ -53,8 +60,8 @@ export const Line = ({ position, isHorizontal, owner, onClick, disabled }: LineP
             radius={0.02}
             smoothness={4}
             onClick={handleClick}
-            onPointerEnter={() => !disabled && !owner && setHovered(true)}
-            onPointerLeave={() => setHovered(false)}
+            onPointerEnter={handlePointerEnter}
+            onPointerLeave={handlePointerLeave}
         >
             <meshStandardMaterial
                 color={color}

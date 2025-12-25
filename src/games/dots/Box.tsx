@@ -2,18 +2,13 @@ import { RoundedBox } from '@react-three/drei';
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Group } from 'three';
-
-type Player = 1 | 2;
+import { getPlayerColor, type Player } from './constants';
 
 interface BoxProps {
     position: [number, number, number];
     owner: Player;
     isNew?: boolean;
 }
-
-const getPlayerColor = (player: Player): string => {
-    return player === 1 ? '#22d3ee' : '#f472b6'; // cyan for P1, pink for P2
-};
 
 export const Box = ({ position, owner, isNew }: BoxProps) => {
     const groupRef = useRef<Group>(null);

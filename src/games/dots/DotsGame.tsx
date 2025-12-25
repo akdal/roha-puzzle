@@ -9,6 +9,7 @@ export const DotsGame = () => {
     const horizontalLines = useDotsStore((s) => s.horizontalLines);
     const verticalLines = useDotsStore((s) => s.verticalLines);
     const boxes = useDotsStore((s) => s.boxes);
+    const newlyCompletedBoxes = useDotsStore((s) => s.newlyCompletedBoxes);
     const gameStatus = useDotsStore((s) => s.gameStatus);
     const drawLine = useDotsStore((s) => s.drawLine);
 
@@ -16,6 +17,9 @@ export const DotsGame = () => {
     const gridOffset = ((gridSize - 1) * cellSize) / 2;
     const boardSize = gridSize * cellSize;
     const isDisabled = gameStatus !== 'PLAYING';
+
+    const isNewBox = (row: number, col: number) =>
+        newlyCompletedBoxes.some((b) => b.row === row && b.col === col);
 
     return (
         <group>
@@ -109,6 +113,7 @@ export const DotsGame = () => {
                                 row * cellSize - gridOffset + cellSize / 2,
                             ]}
                             owner={owner}
+                            isNew={isNewBox(row, col)}
                         />
                     ) : null
                 )

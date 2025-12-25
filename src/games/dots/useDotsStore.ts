@@ -19,6 +19,7 @@ interface DotsState {
     horizontalLines: LineState[][];
     verticalLines: LineState[][];
     boxes: BoxState[][];
+    newlyCompletedBoxes: { row: number; col: number }[];
     currentPlayer: Player;
     scores: { player1: number; player2: number };
     gameStatus: 'IDLE' | 'PLAYING' | 'FINISHED';
@@ -32,6 +33,7 @@ interface DotsActions {
     initGame: (gridSize?: number) => void;
     setGridSize: (size: number) => void;
     drawLine: (type: 'h' | 'v', row: number, col: number) => void;
+    clearNewlyCompletedBoxes: () => void;
     requestViewReset: () => void;
     clearViewReset: () => void;
 }
@@ -47,6 +49,7 @@ export const useDotsStore = create<DotsState & DotsActions>()(
             horizontalLines: [],
             verticalLines: [],
             boxes: [],
+            newlyCompletedBoxes: [],
             currentPlayer: 1,
             scores: { player1: 0, player2: 0 },
             gameStatus: 'IDLE',
@@ -62,6 +65,7 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                     horizontalLines: createEmptyGrid(size, size - 1, null),
                     verticalLines: createEmptyGrid(size - 1, size, null),
                     boxes: createEmptyGrid(size - 1, size - 1, null),
+                    newlyCompletedBoxes: [],
                     currentPlayer: 1,
                     scores: { player1: 0, player2: 0 },
                     gameStatus: 'PLAYING',
@@ -100,7 +104,7 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                 }
 
                 // Check for completed boxes
-                let boxesCompleted = 0;
+                const newlyCompleted: { row: number; col: number }[] = [];
                 const gridSize = state.gridSize;
 
                 if (type === 'h') {
@@ -117,7 +121,7 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                             verticalLines[boxRow]?.[boxCol + 1] !== null
                         ) {
                             boxes[boxRow][boxCol] = currentPlayer;
-                            boxesCompleted++;
+                            newlyCompleted.push({ row: boxRow, col: boxCol });
                         }
                     }
                     // Box below: row < gridSize - 1
@@ -132,7 +136,7 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                             verticalLines[boxRow]?.[boxCol + 1] !== null
                         ) {
                             boxes[boxRow][boxCol] = currentPlayer;
-                            boxesCompleted++;
+                            newlyCompleted.push({ row: boxRow, col: boxCol });
                         }
                     }
                 } else {
@@ -149,7 +153,7 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                             verticalLines[boxRow]?.[boxCol + 1] !== null
                         ) {
                             boxes[boxRow][boxCol] = currentPlayer;
-                            boxesCompleted++;
+                            newlyCompleted.push({ row: boxRow, col: boxCol });
                         }
                     }
                     // Box right: col < gridSize - 1
@@ -164,10 +168,12 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                             verticalLines[boxRow]?.[boxCol + 1] !== null
                         ) {
                             boxes[boxRow][boxCol] = currentPlayer;
-                            boxesCompleted++;
+                            newlyCompleted.push({ row: boxRow, col: boxCol });
                         }
                     }
                 }
+
+                const boxesCompleted = newlyCompleted.length;
 
                 // Update scores
                 if (boxesCompleted > 0) {
@@ -208,6 +214,7 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                         horizontalLines,
                         verticalLines,
                         boxes,
+                        newlyCompletedBoxes: newlyCompleted,
                         scores,
                         gameStatus,
                         winner,
@@ -224,11 +231,14 @@ export const useDotsStore = create<DotsState & DotsActions>()(
                     horizontalLines,
                     verticalLines,
                     boxes,
+                    newlyCompletedBoxes: newlyCompleted,
                     scores,
                     currentPlayer: nextPlayer,
                     lastMove: { type, row, col },
                 });
             },
+
+            clearNewlyCompletedBoxes: () => set({ newlyCompletedBoxes: [] }),
 
             requestViewReset: () => set({ viewResetRequested: true }),
             clearViewReset: () => set({ viewResetRequested: false }),
