@@ -4,7 +4,6 @@ import { OrbitControls } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { Cube } from './components/Cube';
 import { UI } from './components/UI';
-import { GameBackground } from './components/GameBackground';
 import { useStore } from './store/useStore';
 import { Hanoi } from './games/hanoi';
 import { Puzzle } from './games/puzzle';
@@ -36,8 +35,6 @@ function RubiksScene() {
 
   return (
     <>
-      <GameBackground />
-
       {/* Ambient light for even base illumination */}
       <ambientLight intensity={0.6} />
 
@@ -80,9 +77,14 @@ interface RubiksGameProps {
 
 function RubiksGame({ onBack }: RubiksGameProps) {
   return (
-    <div className="w-full h-full relative game-screen">
+    <div className="w-full h-full relative game-screen bg-gradient-to-b from-[#0a1628] via-[#0f2937] to-[#1a3a4a]">
       <UI onBack={onBack} />
-      <Canvas camera={{ position: [5, 5, 5], fov: 50 }} shadows>
+      <Canvas
+        camera={{ position: [5, 5, 5], fov: 50 }}
+        shadows
+        gl={{ alpha: true }}
+        style={{ background: 'transparent' }}
+      >
         <RubiksScene />
       </Canvas>
     </div>

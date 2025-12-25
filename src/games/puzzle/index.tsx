@@ -30,9 +30,6 @@ function PuzzleScene() {
 
     return (
         <>
-            {/* Background - matching homepage */}
-            <color attach="background" args={['#0a1628']} />
-
             {/* Lighting */}
             <ambientLight intensity={0.7} />
             <directionalLight position={[5, 10, 5]} intensity={0.8} />
@@ -68,9 +65,13 @@ export const Puzzle = ({ onBack }: PuzzleProps) => {
     }, [initGame]);
 
     return (
-        <div className="w-full h-full relative game-screen">
+        <div className="w-full h-full relative game-screen bg-gradient-to-b from-[#0a1628] via-[#0f2937] to-[#1a3a4a]">
             <PuzzleUI onBack={onBack} />
-            <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+            <Canvas
+                camera={{ position: [0, 0, 5], fov: 50 }}
+                gl={{ alpha: true }}
+                style={{ background: 'transparent' }}
+            >
                 <PuzzleScene />
             </Canvas>
         </div>

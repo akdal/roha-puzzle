@@ -30,9 +30,6 @@ function MemoryScene() {
 
     return (
         <>
-            {/* Winter night background */}
-            <color attach="background" args={['#0a1628']} />
-
             {/* Lighting - warm winter mood */}
             <ambientLight intensity={0.5} color="#b4d7ff" />
             <directionalLight position={[5, 10, 5]} intensity={0.6} color="#fff5e6" />
@@ -68,9 +65,13 @@ export const Memory = ({ onBack }: MemoryProps) => {
     }, [initGame]);
 
     return (
-        <div className="w-full h-full relative game-screen">
+        <div className="w-full h-full relative game-screen bg-gradient-to-b from-[#0a1628] via-[#0f2937] to-[#1a3a4a]">
             <MemoryUI onBack={onBack} />
-            <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
+            <Canvas
+                camera={{ position: [0, 0, 6], fov: 50 }}
+                gl={{ alpha: true }}
+                style={{ background: 'transparent' }}
+            >
                 <MemoryScene />
             </Canvas>
         </div>
