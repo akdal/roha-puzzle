@@ -61,13 +61,13 @@ interface ColorActions {
     clearViewReset: () => void;
 }
 
-// Predefined soft, creamy colors for mixing (pastel-toned, less harsh)
+// Predefined vibrant colors for mixing (brighter, more saturated)
 const BASE_COLORS: RGB[] = [
-    { r: 235, g: 120, b: 110 }, // Soft Coral Red
-    { r: 120, g: 160, b: 220 }, // Soft Sky Blue
-    { r: 250, g: 235, b: 150 }, // Creamy Yellow
+    { r: 245, g: 95, b: 85 },   // Vibrant Coral Red
+    { r: 85, g: 155, b: 235 },  // Bright Sky Blue
+    { r: 255, g: 220, b: 80 },  // Sunny Yellow
     { r: 255, g: 255, b: 255 }, // White
-    { r: 75, g: 80, b: 95 },    // Soft Charcoal
+    { r: 65, g: 70, b: 85 },    // Soft Charcoal
 ];
 
 const rgbToHex = (rgb: RGB): string => {

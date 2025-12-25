@@ -195,13 +195,13 @@ const Palette = ({ position }: PaletteProps) => {
         <group position={position}>
             {/* Main palette board */}
             <RoundedBox args={[6, 0.15, 2.5]} radius={0.3} smoothness={4}>
-                <meshStandardMaterial color="#8b5a2b" metalness={0.1} roughness={0.8} />
+                <meshStandardMaterial color="#a06830" metalness={0.1} roughness={0.8} />
             </RoundedBox>
 
             {/* Thumb hole */}
             <mesh position={[-2.2, 0.1, 0.3]} rotation={[-Math.PI / 2, 0, 0]}>
                 <ringGeometry args={[0.25, 0.45, 32]} />
-                <meshStandardMaterial color="#5d3a1a" />
+                <meshStandardMaterial color="#704520" />
             </mesh>
         </group>
     );
@@ -299,7 +299,7 @@ export const ColorGame = () => {
             <mesh position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
                 <planeGeometry args={[15, 10]} />
                 <meshStandardMaterial
-                    color="#1a2a3a"
+                    color="#2a3d4d"
                     metalness={0.3}
                     roughness={0.8}
                 />

@@ -40,11 +40,11 @@ function ColorScene() {
 
     return (
         <>
-            {/* Lighting - soft and balanced */}
-            <ambientLight intensity={0.3} color="#fff5f5" />
-            <directionalLight position={[5, 10, 5]} intensity={0.4} color="#ffffff" />
-            <directionalLight position={[-5, 5, 5]} intensity={0.2} color="#ffd5e5" />
-            <pointLight position={[0, 3, 3]} intensity={0.3} color="#ffffff" />
+            {/* Lighting - brighter and balanced */}
+            <ambientLight intensity={0.4} color="#fff5f5" />
+            <directionalLight position={[5, 10, 5]} intensity={0.5} color="#ffffff" />
+            <directionalLight position={[-5, 5, 5]} intensity={0.25} color="#ffd5e5" />
+            <pointLight position={[0, 3, 3]} intensity={0.35} color="#ffffff" />
 
             {/* Game */}
             <ColorGame />
