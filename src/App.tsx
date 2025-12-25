@@ -10,9 +10,10 @@ import { Puzzle } from './games/puzzle';
 import { Memory } from './games/memory';
 import { Lights } from './games/lights';
 import { ColorMix } from './games/color';
+import { Game2048 } from './games/game2048';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
-type GameType = 'menu' | 'rubiks' | 'hanoi' | 'puzzle' | 'memory' | 'lights' | 'color';
+type GameType = 'menu' | 'rubiks' | 'hanoi' | 'puzzle' | 'memory' | 'lights' | 'color' | 'game2048';
 
 const DEFAULT_CAMERA_POSITION = new Vector3(5, 5, 5);
 
@@ -259,16 +260,12 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             </div>
           </button>
 
-          {/* Lights Out - NEW */}
+          {/* Lights Out */}
           <button
             onClick={() => onSelectGame('lights')}
             className="group relative bg-gradient-to-b from-white/[0.08] to-transparent backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:border-yellow-400/40 hover:bg-yellow-500/10 hover:scale-[1.02] hover:-translate-y-1"
           >
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            {/* NEW badge */}
-            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
-              NEW
-            </div>
             <div className="relative">
               <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-red-500 via-green-500 to-yellow-400 flex items-center justify-center shadow-lg shadow-yellow-500/30">
                 <span className="text-2xl sm:text-3xl">🎄</span>
@@ -281,16 +278,12 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             </div>
           </button>
 
-          {/* Color Mix - NEW */}
+          {/* Color Mix */}
           <button
             onClick={() => onSelectGame('color')}
             className="group relative bg-gradient-to-b from-white/[0.08] to-transparent backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:border-cyan-400/40 hover:bg-cyan-500/10 hover:scale-[1.02] hover:-translate-y-1"
           >
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            {/* NEW badge */}
-            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
-              NEW
-            </div>
             <div className="relative">
               <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
                 <span className="text-2xl sm:text-3xl">❄️</span>
@@ -299,6 +292,28 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
               <p className="text-cyan-300/70 text-xs font-medium mb-3">겨울 색 조합</p>
               <p className="text-cyan-100/40 text-xs leading-relaxed">
                 색을 섞어 목표 색상을 만드세요
+              </p>
+            </div>
+          </button>
+
+          {/* 2048 - NEW */}
+          <button
+            onClick={() => onSelectGame('game2048')}
+            className="group relative bg-gradient-to-b from-white/[0.08] to-transparent backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:border-amber-400/40 hover:bg-amber-500/10 hover:scale-[1.02] hover:-translate-y-1"
+          >
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            {/* NEW badge */}
+            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
+              NEW
+            </div>
+            <div className="relative">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                <span className="text-2xl sm:text-3xl">🎮</span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold text-white mb-1.5">2048</h2>
+              <p className="text-amber-300/70 text-xs font-medium mb-3">숫자 합치기</p>
+              <p className="text-cyan-100/40 text-xs leading-relaxed">
+                타일을 밀어 2048을 만드세요
               </p>
             </div>
           </button>
@@ -335,6 +350,8 @@ function App() {
       return <Lights onBack={handleBack} />;
     case 'color':
       return <ColorMix onBack={handleBack} />;
+    case 'game2048':
+      return <Game2048 onBack={handleBack} />;
     default:
       return <GameMenu onSelectGame={setCurrentGame} />;
   }
