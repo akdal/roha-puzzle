@@ -60,7 +60,7 @@ export const Hanoi = ({ onBack }: HanoiProps) => {
     }, [initGame]);
 
     return (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative game-screen">
             <HanoiUI onBack={onBack} />
             <Canvas camera={{ position: [0, 6, 10], fov: 50 }}>
                 <HanoiScene />

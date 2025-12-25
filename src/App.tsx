@@ -79,7 +79,7 @@ interface RubiksGameProps {
 
 function RubiksGame({ onBack }: RubiksGameProps) {
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative game-screen">
       <UI onBack={onBack} />
       <Canvas camera={{ position: [5, 5, 5], fov: 50 }} shadows>
         <RubiksScene />

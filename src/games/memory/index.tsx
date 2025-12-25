@@ -47,7 +47,7 @@ export const Memory = ({ onBack }: MemoryProps) => {
     }, [initGame]);
 
     return (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative game-screen">
             <MemoryUI onBack={onBack} />
             <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
                 <MemoryScene />

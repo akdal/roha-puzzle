@@ -47,7 +47,7 @@ export const Puzzle = ({ onBack }: PuzzleProps) => {
     }, [initGame]);
 
     return (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative game-screen">
             <PuzzleUI onBack={onBack} />
             <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
                 <PuzzleScene />
