@@ -97,8 +97,8 @@ const calculateAccuracy = (current: RGB, target: RGB): number => {
 
 // Difficulty settings: [numColors, minMoves, maxMoves]
 const DIFFICULTY_SETTINGS: Record<Difficulty, { numColors: number; minMoves: number; maxMoves: number }> = {
-    easy: { numColors: 3, minMoves: 2, maxMoves: 3 },     // 9-27 combinations
-    medium: { numColors: 3, minMoves: 4, maxMoves: 5 },   // 81-243 combinations
+    easy: { numColors: 3, minMoves: 4, maxMoves: 5 },     // 81-243 combinations
+    medium: { numColors: 3, minMoves: 5, maxMoves: 6 },   // 243-729 combinations
     hard: { numColors: 4, minMoves: 6, maxMoves: 7 },     // 4096-16384 combinations
 };
 

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Mesh, Group } from 'three';
 import { useColorStore, rgbToHex } from './useColorStore';
 import { RoundedBox, Text } from '@react-three/drei';
@@ -47,7 +47,7 @@ const PaintTube = ({ color, position, label, scale = 1 }: PaintTubeProps) => {
             {/* Shine effect */}
             <mesh position={[0.2, 0.2, 0.35]}>
                 <sphereGeometry args={[0.12, 16, 16]} />
-                <meshBasicMaterial color="#ffffff" transparent opacity={0.4} />
+                <meshBasicMaterial color="#ffffff" transparent opacity={0.2} />
             </mesh>
 
             {/* Label */}
@@ -139,7 +139,7 @@ const ColorBall = ({ color, position, isSelected, isHint, onClick, index }: Colo
             {/* Highlight */}
             <mesh position={[0.15, 0.15, 0.25]}>
                 <sphereGeometry args={[0.1, 16, 16]} />
-                <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
+                <meshBasicMaterial color="#ffffff" transparent opacity={0.25} />
             </mesh>
 
             {/* Hint badge */}
@@ -195,33 +195,51 @@ export const ColorGame = () => {
         hintColorIndex,
     } = useColorStore();
 
+    const { viewport } = useThree();
+    const aspectRatio = viewport.width / viewport.height;
+
+    // Responsive layout based on aspect ratio
+    const isPortrait = aspectRatio < 1;
+    const isNarrow = aspectRatio < 0.7;
+
+    // Adjust scale for different screen sizes
+    const gameScale = isNarrow ? 0.7 : isPortrait ? 0.85 : 1;
+
+    // Tube positions - stack vertically on portrait, horizontal on landscape
+    const tubeSpacing = isPortrait ? 1.5 : 2;
+    const tubeY = isPortrait ? 1.8 : 1.2;
+
     const targetHex = rgbToHex(targetColor);
     const currentHex = rgbToHex(currentColor);
 
-    // Layout
-    const ballSpacing = 1.1;
+    // Layout - adjust ball spacing for narrow screens
+    const ballSpacing = isNarrow ? 0.9 : isPortrait ? 1.0 : 1.1;
     const ballsStartX = -((availableColors.length - 1) * ballSpacing) / 2;
 
+    // Palette and balls position
+    const paletteY = isPortrait ? -1.5 : -1.2;
+    const ballsY = isPortrait ? -0.9 : -0.6;
+
     return (
-        <group>
-            {/* Target color tube - left */}
+        <group scale={gameScale}>
+            {/* Target color tube - left/top */}
             <PaintTube
                 color={targetHex}
-                position={[-2, 1.2, 0]}
+                position={[-tubeSpacing, tubeY, 0]}
                 label="목표"
-                scale={1.2}
+                scale={isPortrait ? 1.0 : 1.2}
             />
 
-            {/* Current mix tube - right */}
+            {/* Current mix tube - right/bottom */}
             <PaintTube
                 color={currentHex}
-                position={[2, 1.2, 0]}
+                position={[tubeSpacing, tubeY, 0]}
                 label="내 색"
-                scale={1.2}
+                scale={isPortrait ? 1.0 : 1.2}
             />
 
             {/* Arrow between */}
-            <group position={[0, 1.2, 0]}>
+            <group position={[0, tubeY, 0]}>
                 <mesh rotation={[0, 0, -Math.PI / 2]}>
                     <coneGeometry args={[0.15, 0.4, 16]} />
                     <meshStandardMaterial color="#64748b" />
@@ -233,10 +251,10 @@ export const ColorGame = () => {
             </group>
 
             {/* Palette */}
-            <Palette position={[0, -1.2, 0]} />
+            <Palette position={[0, paletteY, 0]} />
 
             {/* Color balls on palette */}
-            <group position={[0, -0.6, 0]}>
+            <group position={[0, ballsY, 0]}>
                 {availableColors.map((color, index) => (
                     <ColorBall
                         key={index}

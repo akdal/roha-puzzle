@@ -3,8 +3,8 @@ import { useColorStore, rgbToHex, DIFFICULTY_SETTINGS, type Difficulty } from '.
 import { useCelebration } from '../../components/Celebration';
 
 const DIFFICULTY_LABELS: Record<Difficulty, { label: string; emoji: string; description: string }> = {
-    easy: { label: '쉬움', emoji: '🟢', description: '2~3회 믹싱' },
-    medium: { label: '보통', emoji: '🟡', description: '4~5회 믹싱' },
+    easy: { label: '쉬움', emoji: '🟢', description: '4~5회 믹싱' },
+    medium: { label: '보통', emoji: '🟡', description: '5~6회 믹싱' },
     hard: { label: '어려움', emoji: '🔴', description: '6~7회 믹싱' },
 };
 
@@ -38,6 +38,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
 
     const [showSettings, setShowSettings] = useState(false);
     const [showDifficulty, setShowDifficulty] = useState(false);
+    const [isResultMinimized, setIsResultMinimized] = useState(false);
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [now, setNow] = useState(() => Date.now());
     const [hideTimer, setHideTimer] = useState(false);
@@ -77,9 +78,37 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
             (sameRecords.length > 1 && accuracy > sameRecords[1].accuracy);
         const isPerfectMoves = moveCount <= minMoves;
 
+        // Minimized result badge
+        if (isResultMinimized) {
+            return (
+                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-auto">
+                    <button
+                        onClick={() => setIsResultMinimized(false)}
+                        className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-2xl shadow-lg border border-white/20 flex items-center gap-3 hover:scale-105 transition"
+                    >
+                        <span className="text-2xl">{isNewRecord ? '🏆' : '⭐'}</span>
+                        <div className="text-left">
+                            <div className="font-bold">{accuracy}% 완성!</div>
+                            <div className="text-xs opacity-80">{timeDisplay}초 • {moveCount}회</div>
+                        </div>
+                        <span className="text-lg ml-2">▲</span>
+                    </button>
+                </div>
+            );
+        }
+
         return (
-            <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
-                <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20">
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/90 to-[#1a3a4a]/90 backdrop-blur-sm">
+                <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20 relative">
+                    {/* Minimize button */}
+                    <button
+                        onClick={() => setIsResultMinimized(true)}
+                        className="absolute top-3 right-3 text-cyan-400/60 hover:text-cyan-200 text-sm px-2 py-1 rounded-lg hover:bg-cyan-500/10 transition"
+                        title="결과 보기"
+                    >
+                        ▼ 축소
+                    </button>
+
                     <div className="text-4xl mb-2">{isNewRecord ? '🏆' : accuracy === 100 ? '⭐' : '🎨'}</div>
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-blue-300 mb-2">
                         {isNewRecord ? '새로운 기록!' : accuracy === 100 ? '완벽해요!' : '잘했어요!'}
@@ -144,7 +173,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                             ❄️ 다음 레벨
                         </button>
                         <button
-                            onClick={() => initGame()}
+                            onClick={() => { setIsResultMinimized(false); initGame(); }}
                             className="px-6 py-2 text-cyan-300 hover:text-cyan-100"
                         >
                             이 레벨 다시하기
@@ -338,7 +367,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                                     className="flex justify-between border-b border-cyan-500/20 pb-1 text-sm text-cyan-200"
                                 >
                                     <span>
-                                        {i + 1}. {DIFFICULTY_LABELS[entry.difficulty]?.emoji || ''} Lv{entry.level}
+                                        {i + 1}. {DIFFICULTY_LABELS[entry.difficulty]?.emoji || ''} 레벨{entry.level}
                                     </span>
                                     <span className="font-mono">
                                         {entry.accuracy}% - {entry.moves}회
@@ -350,23 +379,26 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                 </div>
             )}
 
-            {/* Mix button - appears when color is selected */}
-            {selectedColor !== null && (
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-1/3 pointer-events-auto">
-                    <button
-                        onClick={() => mixColor()}
-                        className="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-lg font-bold rounded-2xl shadow-lg hover:from-pink-400 hover:to-purple-400 transition hover:scale-105 active:scale-95"
-                    >
-                        🎨 섞기!
-                    </button>
-                </div>
-            )}
+            {/* Mix button - always visible, active when color is selected */}
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-1/3 pointer-events-auto">
+                <button
+                    onClick={() => mixColor()}
+                    disabled={selectedColor === null}
+                    className={`px-8 py-4 text-lg font-bold rounded-2xl shadow-lg transition ${
+                        selectedColor !== null
+                            ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 hover:scale-105 active:scale-95'
+                            : 'bg-gray-600/50 text-gray-400 cursor-not-allowed'
+                    }`}
+                >
+                    {selectedColor !== null ? '❄️ 섞기!' : '🎨 색상을 선택하세요'}
+                </button>
+            </div>
 
             {/* Bottom - Info and new game */}
             <div className="flex flex-col items-center gap-2 pointer-events-auto mb-4">
                 <div className="flex items-center gap-2 text-cyan-300/70 text-xs">
                     <span className="bg-cyan-500/10 px-2 py-0.5 rounded-full font-bold border border-cyan-500/20">
-                        {DIFFICULTY_LABELS[difficulty].emoji} Lv.{level}
+                        {DIFFICULTY_LABELS[difficulty].emoji} {DIFFICULTY_LABELS[difficulty].label} 레벨 {level}
                     </span>
                     <span>•</span>
                     <span>횟수: {moveCount}/{minMoves}</span>

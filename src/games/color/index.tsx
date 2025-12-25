@@ -8,6 +8,7 @@ import { ColorUI } from './ColorUI';
 import { useColorStore } from './useColorStore';
 
 const DEFAULT_CAMERA_POSITION = new Vector3(0, 2, 7);
+const PORTRAIT_CAMERA_POSITION = new Vector3(0, 2.5, 9);
 
 interface ColorProps {
     onBack: () => void;
@@ -17,22 +18,25 @@ function ColorScene() {
     const viewResetRequested = useColorStore((s) => s.viewResetRequested);
     const clearViewReset = useColorStore((s) => s.clearViewReset);
     const controlsRef = useRef<OrbitControlsImpl>(null);
-    const { camera } = useThree();
+    const { camera, viewport } = useThree();
+
+    const isPortrait = viewport.width / viewport.height < 1;
+    const cameraPosition = isPortrait ? PORTRAIT_CAMERA_POSITION : DEFAULT_CAMERA_POSITION;
 
     useEffect(() => {
-        // Set initial camera position
-        camera.position.copy(DEFAULT_CAMERA_POSITION);
+        // Set initial camera position based on aspect ratio
+        camera.position.copy(cameraPosition);
         camera.lookAt(0, 0, 0);
-    }, [camera]);
+    }, [camera, cameraPosition]);
 
     useEffect(() => {
         if (viewResetRequested && controlsRef.current) {
-            camera.position.copy(DEFAULT_CAMERA_POSITION);
+            camera.position.copy(cameraPosition);
             controlsRef.current.target.set(0, 0, 0);
             controlsRef.current.update();
             clearViewReset();
         }
-    }, [viewResetRequested, camera, clearViewReset]);
+    }, [viewResetRequested, camera, clearViewReset, cameraPosition]);
 
     return (
         <>
