@@ -1,13 +1,32 @@
-import { Canvas } from '@react-three/fiber';
+import { useRef, useEffect } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
+import { Vector3 } from 'three';
 import { Cube } from './components/Cube';
 import { UI } from './components/UI';
 import { GameBackground } from './components/GameBackground';
 import { useStore } from './store/useStore';
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
+
+const DEFAULT_CAMERA_POSITION = new Vector3(5, 5, 5);
 
 function Scene() {
   const isDraggingCube = useStore((s) => s.isDraggingCube);
   const orbitLocked = useStore((s) => s.orbitLocked);
+  const viewResetRequested = useStore((s) => s.viewResetRequested);
+  const clearViewReset = useStore((s) => s.clearViewReset);
+
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const { camera } = useThree();
+
+  useEffect(() => {
+    if (viewResetRequested && controlsRef.current) {
+      camera.position.copy(DEFAULT_CAMERA_POSITION);
+      controlsRef.current.target.set(0, 0, 0);
+      controlsRef.current.update();
+      clearViewReset();
+    }
+  }, [viewResetRequested, camera, clearViewReset]);
 
   return (
     <>
@@ -39,6 +58,7 @@ function Scene() {
       <Cube />
 
       <OrbitControls
+        ref={controlsRef}
         makeDefault
         enableDamping
         dampingFactor={0.05}

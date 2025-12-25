@@ -15,10 +15,14 @@ export const UI = () => {
         invertControls,
         toggleInvertControls,
         orbitLocked,
-        toggleOrbitLock
+        toggleOrbitLock,
+        cubeLocked,
+        toggleCubeLock,
+        requestViewReset
     } = useStore();
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
     const [now, setNow] = useState(() => Date.now());
 
     useEffect(() => {
@@ -81,66 +85,110 @@ export const UI = () => {
     }
 
     return (
-        <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6 z-20">
+        <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-3 sm:p-6 z-20">
             {/* Top Bar */}
-            <div className="flex justify-between items-start pointer-events-auto">
-                <div className="bg-black/50 p-4 rounded-xl text-white backdrop-blur-md border border-white/10">
-                    <h1 className="text-xl font-bold mb-1">Rubik's 3D</h1>
-                    <button
-                        onClick={() => setShowLeaderboard(!showLeaderboard)}
-                        className="text-xs text-blue-300 hover:text-blue-100 underline mb-2"
-                    >
-                        {showLeaderboard ? 'Back to Game' : 'Leaderboard'}
-                    </button>
+            <div className="flex justify-between items-start gap-2 pointer-events-auto">
+                {/* Left Panel - Controls */}
+                <div className="bg-black/60 rounded-xl text-white backdrop-blur-md border border-white/10 overflow-hidden">
+                    {/* Header with toggle */}
+                    <div className="flex items-center justify-between p-2.5 sm:p-3">
+                        <h1 className="text-sm sm:text-lg font-bold">Rubik's 3D</h1>
+                        <button
+                            onClick={() => setShowSettings(!showSettings)}
+                            className="text-lg sm:text-xl px-1"
+                        >
+                            {showSettings ? '✕' : '⚙️'}
+                        </button>
+                    </div>
 
-                    <select
-                        value={theme}
-                        onChange={(e) => setTheme(e.target.value as 'dark' | 'light' | 'blue')}
-                        className="block w-full bg-gray-800 text-xs p-1 rounded border border-gray-600 mt-2"
-                    >
-                        <option value="dark">Dark Theme</option>
-                        <option value="light">Light Theme</option>
-                        <option value="blue">Blue Theme</option>
-                    </select>
+                    {/* Quick Lock Buttons - Always visible */}
+                    <div className="flex border-t border-white/10">
+                        <button
+                            onClick={toggleOrbitLock}
+                            className={`flex-1 py-2.5 text-center transition border-r border-white/10 ${
+                                orbitLocked
+                                    ? 'bg-red-600/80 text-white'
+                                    : 'text-gray-300 active:bg-white/10'
+                            }`}
+                        >
+                            <span className="text-lg">{orbitLocked ? '🔒' : '🌐'}</span>
+                        </button>
+                        <button
+                            onClick={toggleCubeLock}
+                            className={`flex-1 py-2.5 text-center transition border-r border-white/10 ${
+                                cubeLocked
+                                    ? 'bg-red-600/80 text-white'
+                                    : 'text-gray-300 active:bg-white/10'
+                            }`}
+                        >
+                            <span className="text-lg">{cubeLocked ? '🔒' : '🎲'}</span>
+                        </button>
+                        <button
+                            onClick={requestViewReset}
+                            className="flex-1 py-2.5 text-center text-gray-300 active:bg-white/10 transition"
+                        >
+                            <span className="text-lg">↺</span>
+                        </button>
+                    </div>
 
-                    <button
-                        onClick={toggleInvertControls}
-                        className={`mt-2 w-full text-xs p-1.5 rounded border transition ${
-                            invertControls
-                                ? 'bg-blue-600 border-blue-500 text-white'
-                                : 'bg-gray-800 border-gray-600 text-gray-300'
-                        }`}
-                    >
-                        {invertControls ? '↔ Inverted' : '↔ Natural'}
-                    </button>
+                    {/* Expandable Settings */}
+                    {showSettings && (
+                        <div className="p-2.5 sm:p-3 border-t border-white/10 space-y-2">
+                            <button
+                                onClick={() => { setShowLeaderboard(!showLeaderboard); setShowSettings(false); }}
+                                className="w-full text-left text-xs text-blue-300 active:text-blue-100"
+                            >
+                                📊 Leaderboard
+                            </button>
 
-                    <button
-                        onClick={toggleOrbitLock}
-                        className={`mt-2 w-full text-xs p-1.5 rounded border transition ${
-                            orbitLocked
-                                ? 'bg-red-600 border-red-500 text-white'
-                                : 'bg-gray-800 border-gray-600 text-gray-300'
-                        }`}
-                    >
-                        {orbitLocked ? '🔒 Orbit Locked' : '🔓 Orbit Free'}
-                    </button>
+                            <select
+                                value={theme}
+                                onChange={(e) => setTheme(e.target.value as 'dark' | 'light' | 'blue')}
+                                className="block w-full bg-gray-800 text-xs p-2 rounded border border-gray-600"
+                            >
+                                <option value="dark">🌙 Dark</option>
+                                <option value="light">☀️ Light</option>
+                                <option value="blue">🌊 Blue</option>
+                            </select>
+
+                            <button
+                                onClick={toggleInvertControls}
+                                className={`w-full text-xs p-2 rounded border transition ${
+                                    invertControls
+                                        ? 'bg-blue-600 border-blue-500 text-white'
+                                        : 'bg-gray-800 border-gray-600 text-gray-300'
+                                }`}
+                            >
+                                {invertControls ? '↔ Inverted' : '↔ Natural'}
+                            </button>
+                        </div>
+                    )}
                 </div>
 
-                <div className="flex flex-col gap-2">
-                    <div className="bg-black/50 p-4 rounded-xl text-white backdrop-blur-md border border-white/10 min-w-[120px]">
-                        <div className="text-xs text-gray-400 uppercase">Time</div>
-                        <div className="text-2xl font-mono font-bold text-yellow-400">{timeDisplay}</div>
+                {/* Right Panel - Stats */}
+                <div className="flex gap-1.5 sm:gap-2">
+                    <div className="bg-black/60 px-3 py-2 sm:p-3 rounded-xl text-white backdrop-blur-md border border-white/10">
+                        <div className="text-[10px] sm:text-xs text-gray-400 uppercase">Time</div>
+                        <div className="text-lg sm:text-2xl font-mono font-bold text-yellow-400">{timeDisplay}</div>
                     </div>
-                    <div className="bg-black/50 p-4 rounded-xl text-white backdrop-blur-md border border-white/10 min-w-[120px]">
-                        <div className="text-xs text-gray-400 uppercase">Moves</div>
-                        <div className="text-xl font-mono font-bold">{moveCount}</div>
+                    <div className="bg-black/60 px-3 py-2 sm:p-3 rounded-xl text-white backdrop-blur-md border border-white/10">
+                        <div className="text-[10px] sm:text-xs text-gray-400 uppercase">Moves</div>
+                        <div className="text-lg sm:text-xl font-mono font-bold">{moveCount}</div>
                     </div>
                 </div>
             </div>
 
             {showLeaderboard && (
                 <div className="absolute top-20 left-6 pointer-events-auto bg-white p-4 rounded-xl w-64 shadow-xl z-50">
-                    <h2 className="text-xl font-bold mb-4 text-black">Leaderboard</h2>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl font-bold text-black">Leaderboard</h2>
+                        <button
+                            onClick={() => setShowLeaderboard(false)}
+                            className="text-gray-500 hover:text-black text-xl font-bold leading-none"
+                        >
+                            ×
+                        </button>
+                    </div>
                     {leaderboard.length === 0 ? (
                         <p className="text-gray-500 text-sm">No records.</p>
                     ) : (

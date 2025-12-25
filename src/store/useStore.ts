@@ -37,6 +37,8 @@ interface GameState {
     isDraggingCube: boolean;
     invertControls: boolean;
     orbitLocked: boolean;
+    cubeLocked: boolean;
+    viewResetRequested: boolean;
 }
 
 interface Action {
@@ -49,6 +51,9 @@ interface Action {
     setIsDraggingCube: (isDragging: boolean) => void;
     toggleInvertControls: () => void;
     toggleOrbitLock: () => void;
+    toggleCubeLock: () => void;
+    requestViewReset: () => void;
+    clearViewReset: () => void;
 }
 
 const generateCubies = (): CubieState[] => {
@@ -96,6 +101,8 @@ export const useStore = create<GameState & Action>()(
             isDraggingCube: false,
             invertControls: false,
             orbitLocked: false,
+            cubeLocked: false,
+            viewResetRequested: false,
 
             initCube: () => set({ cubies: generateCubies() }),
 
@@ -106,6 +113,12 @@ export const useStore = create<GameState & Action>()(
             toggleInvertControls: () => set((state) => ({ invertControls: !state.invertControls })),
 
             toggleOrbitLock: () => set((state) => ({ orbitLocked: !state.orbitLocked })),
+
+            toggleCubeLock: () => set((state) => ({ cubeLocked: !state.cubeLocked })),
+
+            requestViewReset: () => set({ viewResetRequested: true }),
+
+            clearViewReset: () => set({ viewResetRequested: false }),
 
             triggerRotation: (axis, layer, direction, speed = 1) => {
                 const state = get();

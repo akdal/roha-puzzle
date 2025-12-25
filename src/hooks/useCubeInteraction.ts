@@ -15,7 +15,7 @@ interface DragState {
 const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 export const useCubeInteraction = () => {
-    const { triggerRotation, animation, setIsDraggingCube, invertControls } = useStore();
+    const { triggerRotation, animation, setIsDraggingCube, invertControls, cubeLocked } = useStore();
     const dragRef = useRef<DragState | null>(null);
 
     // Cleanup on unmount
@@ -28,6 +28,7 @@ export const useCubeInteraction = () => {
     const onPointerDown = useCallback((e: ThreeEvent<PointerEvent>, cubiePos: [number, number, number]) => {
         e.stopPropagation();
 
+        if (cubeLocked) return;
         if (animation.isAnimating) return;
         if (!e.face) return;
 
@@ -56,7 +57,7 @@ export const useCubeInteraction = () => {
         } catch {
             // Ignore capture errors on some mobile browsers
         }
-    }, [animation.isAnimating, setIsDraggingCube]);
+    }, [animation.isAnimating, setIsDraggingCube, cubeLocked]);
 
     const onPointerMove = useCallback((e: ThreeEvent<PointerEvent>) => {
         if (!dragRef.current || animation.isAnimating) return;
