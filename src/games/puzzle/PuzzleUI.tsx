@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePuzzleStore } from './usePuzzleStore';
+import { useCelebration } from '../../components/Celebration';
 
 interface PuzzleUIProps {
     onBack: () => void;
@@ -20,6 +21,18 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
     const [showSettings, setShowSettings] = useState(false);
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [now, setNow] = useState(() => Date.now());
+    const { celebrate } = useCelebration();
+    const celebratedRef = useRef(false);
+
+    // Celebration effect when solved
+    useEffect(() => {
+        if (gameStatus === 'SOLVED' && !celebratedRef.current) {
+            celebratedRef.current = true;
+            celebrate('default');
+        } else if (gameStatus !== 'SOLVED') {
+            celebratedRef.current = false;
+        }
+    }, [gameStatus, celebrate]);
 
     useEffect(() => {
         if (gameStatus !== 'PLAYING' || !startTime) return;

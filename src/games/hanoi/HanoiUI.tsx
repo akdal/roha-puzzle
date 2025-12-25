@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useHanoiStore, getMinMoves } from './useHanoiStore';
+import { useCelebration } from '../../components/Celebration';
 
 interface HanoiUIProps {
     onBack: () => void;
@@ -19,6 +20,19 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
     const [showSettings, setShowSettings] = useState(false);
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [now, setNow] = useState(() => Date.now());
+    const { celebrate } = useCelebration();
+    const celebratedRef = useRef(false);
+
+    // Celebration effect when solved
+    useEffect(() => {
+        if (gameStatus === 'SOLVED' && !celebratedRef.current) {
+            celebratedRef.current = true;
+            const isPerfect = moveCount === getMinMoves(diskCount);
+            celebrate(isPerfect ? 'stars' : 'default');
+        } else if (gameStatus !== 'SOLVED') {
+            celebratedRef.current = false;
+        }
+    }, [gameStatus, celebrate, moveCount, diskCount]);
 
     useEffect(() => {
         if (gameStatus !== 'PLAYING' || !startTime) return;

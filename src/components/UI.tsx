@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useStore } from '../store/useStore';
+import { useCelebration } from './Celebration';
 
 interface UIProps {
     onBack?: () => void;
@@ -32,6 +33,18 @@ export const UI = ({ onBack }: UIProps) => {
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
     const [now, setNow] = useState(() => Date.now());
+    const { celebrate } = useCelebration();
+    const celebratedRef = useRef(false);
+
+    // Celebration effect when solved
+    useEffect(() => {
+        if (gameStatus === 'SOLVED' && !celebratedRef.current) {
+            celebratedRef.current = true;
+            celebrate('fireworks');
+        } else if (gameStatus !== 'SOLVED') {
+            celebratedRef.current = false;
+        }
+    }, [gameStatus, celebrate]);
 
     useEffect(() => {
         if (!isSolving || !startTime) return;
