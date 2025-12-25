@@ -177,9 +177,10 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
                         </button>
                         <button
                             onClick={() => initGame()}
-                            className="flex-1 py-3 sm:py-4 text-center text-yellow-400 active:bg-cyan-500/10 transition"
+                            className="flex-1 py-3 sm:py-4 text-center text-yellow-400 active:bg-cyan-500/10 transition font-bold text-sm"
+                            title="새 게임"
                         >
-                            <span className="text-xl sm:text-2xl">🔃</span>
+                            NEW
                         </button>
                     </div>
 
@@ -243,7 +244,7 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
                                 className="text-sm sm:text-base hover:text-cyan-300 transition"
                                 title={hideTimer ? '시간 보기' : '시간 숨기기'}
                             >
-                                {hideTimer ? '🙈' : '👁️'}
+                                {hideTimer ? '😎' : '🙂'}
                             </button>
                         </div>
                         <div className="text-xl sm:text-3xl font-mono font-bold text-yellow-300">

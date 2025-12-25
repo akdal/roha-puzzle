@@ -179,10 +179,17 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
                         </button>
                         <button
                             onClick={() => requestViewReset()}
-                            className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition"
+                            className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition border-r border-cyan-500/20"
                             title="3D 뷰 초기화"
                         >
                             <span className="text-xl sm:text-2xl">🔄</span>
+                        </button>
+                        <button
+                            onClick={() => scramble()}
+                            className="flex-1 py-3 sm:py-4 text-center text-yellow-400 active:bg-cyan-500/10 transition font-bold text-sm"
+                            title="새 게임"
+                        >
+                            NEW
                         </button>
                     </div>
 
@@ -269,7 +276,7 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
                                 className="text-sm sm:text-base hover:text-cyan-300 transition"
                                 title={hideTimer ? '시간 보기' : '시간 숨기기'}
                             >
-                                {hideTimer ? '🙈' : '👁️'}
+                                {hideTimer ? '😎' : '🙂'}
                             </button>
                         </div>
                         <div className="text-xl sm:text-3xl font-mono font-bold text-yellow-300">

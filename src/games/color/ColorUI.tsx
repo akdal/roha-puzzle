@@ -21,11 +21,9 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
         accuracy,
         targetColor,
         currentColor,
-        selectedColor,
         difficulty,
         minMoves,
         initGame,
-        mixColor,
         resetMix,
         nextLevel,
         setDifficulty,
@@ -225,11 +223,11 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                             <span className="text-xl sm:text-2xl">🔄</span>
                         </button>
                         <button
-                            onClick={() => resetMix()}
-                            className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition"
-                            title="색 초기화"
+                            onClick={() => initGame()}
+                            className="flex-1 py-3 sm:py-4 text-center text-yellow-400 active:bg-cyan-500/10 transition font-bold text-sm"
+                            title="새 게임"
                         >
-                            <span className="text-xl sm:text-2xl">🔃</span>
+                            NEW
                         </button>
                     </div>
 
@@ -280,7 +278,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                                 className="text-sm sm:text-base hover:text-cyan-300 transition"
                                 title={hideTimer ? '시간 보기' : '시간 숨기기'}
                             >
-                                {hideTimer ? '🙈' : '👁️'}
+                                {hideTimer ? '😎' : '🙂'}
                             </button>
                         </div>
                         <div className="text-xl sm:text-3xl font-mono font-bold text-yellow-300">
@@ -393,7 +391,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                         </>
                     )}
                 </div>
-                {/* Mix button + Hint button */}
+                {/* Hint + Reset buttons */}
                 <div className="flex items-center gap-3">
                     <button
                         onClick={showHint}
@@ -408,21 +406,16 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                         <span className="text-xl">💡</span>
                     </button>
                     <button
-                        onClick={() => mixColor()}
-                        disabled={selectedColor === null}
-                        className={`px-8 py-3 text-lg font-bold rounded-full shadow-lg transition ${
-                            selectedColor !== null
-                                ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 hover:scale-105 active:scale-95'
-                                : 'bg-gray-600/50 text-gray-400 cursor-not-allowed'
-                        }`}
+                        onClick={() => resetMix()}
+                        className="px-6 py-3 text-sm font-bold rounded-full shadow-lg transition bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400"
                     >
-                        {selectedColor !== null ? '❄️ 섞기!' : '🎨 색상을 선택하세요'}
+                        🔃 처음으로
                     </button>
                 </div>
             </div>
 
             <div className="absolute bottom-3 left-4 sm:bottom-4 sm:left-6 text-cyan-400/50 text-xs sm:text-sm">
-                🎯 색 선택 → 다시 클릭하면 바로 섞기! (더블클릭도 가능) • 목표: {minMoves}회 안에 95% 일치
+                🎯 색을 클릭하면 섞여요! (더블클릭 가능) • 목표: {minMoves}회 안에 95% 일치
             </div>
         </div>
     );
