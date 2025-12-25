@@ -2,6 +2,76 @@
 
 ## 완료된 작업 (Completed Tasks)
 
+### 2025-12-25: Line Connect (Dots and Boxes) Game
+
+**목표 (Goal)**: 2인용 전략 게임 "라인 커넥트" 추가로 게임 컬렉션 확장
+
+**구현 내용 (Implementation)**:
+
+#### Game Features
+- **Classic Dots and Boxes Gameplay**:
+  - 2인 턴제 전략 게임 구현
+  - 5x5, 6x6, 7x7 그리드 크기 선택 가능
+  - 선을 그어 상자를 완성하는 클래식 규칙
+  - 상자 완성 시 추가 턴 획득
+
+- **3D Visualization**:
+  - React Three Fiber 기반 3D 그리드 렌더링
+  - 인터랙티브 도트 및 라인 컴포넌트
+  - 선택 가능한 라인에 호버 효과
+  - 완성된 상자에 플레이어 컬러 표시
+
+- **Winter Holiday Theme**:
+  - 시안-핑크 그라디언트 UI
+  - 떨어지는 눈송이 배경 효과
+  - 축제 분위기의 컬러 스킴
+  - 플레이어 1: 시안 (#06b6d4), 플레이어 2: 핑크 (#ec4899)
+
+- **Game State Management**:
+  - Zustand 기반 상태 관리
+  - 턴 관리 및 점수 추적
+  - 게임 완료 감지 및 승자 판정
+  - 새 게임/리셋 기능
+
+#### Technical Implementation
+- **Game Files**:
+  - `useDotsStore.ts`: 게임 상태 및 로직 (도트, 라인, 상자 관리)
+  - `Dot.tsx`: 교차점 도트 컴포넌트
+  - `Line.tsx`: 연결 가능한 라인 컴포넌트 (호버 효과 포함)
+  - `Box.tsx`: 완성된 상자 컴포넌트 (플레이어 컬러 표시)
+  - `DotsGame.tsx`: 메인 3D 게임 씬 (카메라, 조명, OrbitControls)
+  - `DotsUI.tsx`: 게임 UI 오버레이 (점수, 턴, 설정)
+  - `index.tsx`: 게임 래퍼 컴포넌트
+
+- **App.tsx Integration**:
+  - 게임 타입에 'dots' 추가
+  - 메뉴에 새 게임 카드 추가 (🔗 아이콘, NEW 배지)
+  - 시안-핑크 그라디언트 테마로 라우팅 구현
+
+**결과 (Result)**:
+- 게임 컬렉션에 2인용 대전 게임 추가
+- 전략적 사고를 요구하는 클래식 게임 제공
+- 겨울 홀리데이 테마로 시각적 일관성 유지
+- 반응형 3D 인터페이스로 직관적인 플레이 경험
+
+**배포 정보 (Deployment)**:
+- 커밋: 08b8032
+- 배포 URL: https://roha-puzzle.vercel.app
+- 배포 ID: Grx8khkC2oBoUPGUKeHsU6kMz2U2
+- 배포 시각: 2025-12-25
+
+**관련 파일 (Related Files)**:
+- `/Users/hwijin/Projects/roha-puzzle/src/App.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/useDotsStore.ts`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/Dot.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/Line.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/Box.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/DotsGame.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/DotsUI.tsx`
+- `/Users/hwijin/Projects/roha-puzzle/src/games/dots/index.tsx`
+
+---
+
 ### 2025-12-25: Color Mix Quick-Mix Interaction
 
 **목표 (Goal)**: 컬러 믹스 게임에 빠른 섞기 기능 추가로 사용자 경험 개선
