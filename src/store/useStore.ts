@@ -206,6 +206,9 @@ export const useStore = create<GameState & Action>()(
                     }].sort((a, b) => a.time - b.time).slice(0, 5);
                 }
 
+                // Check if this was a user move (not a scramble move)
+                const isUserMove = state.scrambleQueue.length === 0 && state.gameStatus === 'RUNNING';
+
                 let nextScramble = state.scrambleQueue;
                 let nextAnimation: AnimationState = { isAnimating: false, axis: null, layer: null, direction: 0, speed: 1 };
 
@@ -225,7 +228,7 @@ export const useStore = create<GameState & Action>()(
 
                 return {
                     cubies: newCubies,
-                    moveCount: state.moveCount + 1,
+                    moveCount: isUserMove ? state.moveCount + 1 : state.moveCount,
                     gameStatus: solved ? 'SOLVED' : state.gameStatus,
                     isSolving: solved ? false : state.isSolving,
                     scrambleQueue: nextScramble,
