@@ -195,7 +195,7 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                             onClick={onBack}
                             className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition border-r border-cyan-500/20"
                         >
-                            <span className="text-xl sm:text-2xl">←</span>
+                            <span className="text-xl sm:text-2xl">🏠</span>
                         </button>
                         <button
                             onClick={() => requestViewReset()}
@@ -234,14 +234,14 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                 <div className="flex gap-2 sm:gap-3">
                     <div className="bg-gradient-to-b from-[#1a3a4a]/90 to-[#0f2937]/90 px-4 py-3 sm:px-5 sm:py-4 rounded-2xl text-white backdrop-blur-md border border-cyan-500/20">
                         <div className="text-xs sm:text-sm text-cyan-400/60 uppercase">점수</div>
-                        <div className="text-xl sm:text-3xl font-mono font-bold text-yellow-300">
+                        <div className="text-lg sm:text-xl font-mono font-bold text-yellow-300">
                             {score}
                         </div>
                     </div>
                     <div className="bg-gradient-to-b from-[#1a3a4a]/90 to-[#0f2937]/90 px-4 py-3 sm:px-5 sm:py-4 rounded-2xl text-white backdrop-blur-md border border-cyan-500/20">
-                        <div className="text-xs sm:text-sm text-cyan-400/60 uppercase">최고</div>
-                        <div className="text-xl sm:text-2xl font-mono font-bold text-cyan-100">
-                            {bestScore}
+                        <div className="text-xs sm:text-sm text-cyan-400/60 uppercase">횟수</div>
+                        <div className="text-base sm:text-lg font-mono font-bold text-cyan-100">
+                            {moveCount}
                         </div>
                     </div>
                 </div>
@@ -289,7 +289,7 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                         최고 타일: {maxTile || 0}
                     </span>
                     <span>•</span>
-                    <span>이동: {moveCount}회</span>
+                    <span>최고: {bestScore}</span>
                 </div>
             </div>
 

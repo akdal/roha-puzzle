@@ -137,7 +137,7 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
                             onClick={onBack}
                             className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition border-r border-cyan-500/20"
                         >
-                            <span className="text-xl sm:text-2xl">←</span>
+                            <span className="text-xl sm:text-2xl">🏠</span>
                         </button>
                         <button
                             onClick={() => requestViewReset()}
@@ -208,13 +208,13 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
                                 {hideTimer ? '😎' : '🙂'}
                             </button>
                         </div>
-                        <div className="text-xl sm:text-3xl font-mono font-bold text-yellow-300">
+                        <div className="text-lg sm:text-xl font-mono font-bold text-yellow-300">
                             {hideTimer ? '---' : timeDisplay}
                         </div>
                     </div>
                     <div className="bg-gradient-to-b from-[#1a3a4a]/90 to-[#0f2937]/90 px-4 py-3 sm:px-5 sm:py-4 rounded-2xl text-white backdrop-blur-md border border-cyan-500/20">
                         <div className="text-xs sm:text-sm text-cyan-400/60 uppercase">레벨</div>
-                        <div className="text-xl sm:text-2xl font-mono font-bold text-amber-300">{level}</div>
+                        <div className="text-base sm:text-lg font-mono font-bold text-amber-300">{level}</div>
                     </div>
                 </div>
             </div>
