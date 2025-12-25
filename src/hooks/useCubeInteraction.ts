@@ -15,7 +15,7 @@ interface DragState {
 const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 export const useCubeInteraction = () => {
-    const { triggerRotation, animation, setIsDraggingCube } = useStore();
+    const { triggerRotation, animation, setIsDraggingCube, invertControls } = useStore();
     const dragRef = useRef<DragState | null>(null);
 
     // Cleanup on unmount
@@ -76,7 +76,8 @@ export const useCubeInteraction = () => {
         const rotation = calculateRotation(delta, cubieWorldPos, faceNormal, camera);
 
         if (rotation) {
-            triggerRotation(rotation.axis, rotation.layer, rotation.direction);
+            const finalDirection = invertControls ? rotation.direction : (rotation.direction * -1) as 1 | -1;
+            triggerRotation(rotation.axis, rotation.layer, finalDirection);
 
             // Reset drag state
             dragRef.current = null;
@@ -88,7 +89,7 @@ export const useCubeInteraction = () => {
                 // Ignore
             }
         }
-    }, [animation.isAnimating, triggerRotation, setIsDraggingCube]);
+    }, [animation.isAnimating, triggerRotation, setIsDraggingCube, invertControls]);
 
     const onPointerUp = useCallback((e: ThreeEvent<PointerEvent>) => {
         if (dragRef.current) {

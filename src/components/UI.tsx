@@ -11,7 +11,9 @@ export const UI = () => {
         isSolving,
         leaderboard,
         theme,
-        setTheme
+        setTheme,
+        invertControls,
+        toggleInvertControls
     } = useStore();
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -98,6 +100,17 @@ export const UI = () => {
                         <option value="light">Light Theme</option>
                         <option value="blue">Blue Theme</option>
                     </select>
+
+                    <button
+                        onClick={toggleInvertControls}
+                        className={`mt-2 w-full text-xs p-1.5 rounded border transition ${
+                            invertControls
+                                ? 'bg-blue-600 border-blue-500 text-white'
+                                : 'bg-gray-800 border-gray-600 text-gray-300'
+                        }`}
+                    >
+                        {invertControls ? '↔ Inverted' : '↔ Natural'}
+                    </button>
                 </div>
 
                 <div className="flex flex-col gap-2">

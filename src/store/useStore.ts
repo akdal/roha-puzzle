@@ -35,6 +35,7 @@ interface GameState {
     leaderboard: LeaderboardEntry[];
     theme: 'dark' | 'light' | 'blue';
     isDraggingCube: boolean;
+    invertControls: boolean;
 }
 
 interface Action {
@@ -45,6 +46,7 @@ interface Action {
     resetGame: () => void;
     setTheme: (theme: 'dark' | 'light' | 'blue') => void;
     setIsDraggingCube: (isDragging: boolean) => void;
+    toggleInvertControls: () => void;
 }
 
 const generateCubies = (): CubieState[] => {
@@ -90,12 +92,15 @@ export const useStore = create<GameState & Action>()(
             leaderboard: [],
             theme: 'dark',
             isDraggingCube: false,
+            invertControls: false,
 
             initCube: () => set({ cubies: generateCubies() }),
 
             setTheme: (theme) => set({ theme }),
 
             setIsDraggingCube: (isDragging) => set({ isDraggingCube: isDragging }),
+
+            toggleInvertControls: () => set((state) => ({ invertControls: !state.invertControls })),
 
             triggerRotation: (axis, layer, direction, speed = 1) => {
                 const state = get();
@@ -206,7 +211,7 @@ export const useStore = create<GameState & Action>()(
         }),
         {
             name: 'rubiks3d-storage',
-            partialize: (state) => ({ leaderboard: state.leaderboard, theme: state.theme }),
+            partialize: (state) => ({ leaderboard: state.leaderboard, theme: state.theme, invertControls: state.invertControls }),
         }
     )
 );
