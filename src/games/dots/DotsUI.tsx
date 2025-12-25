@@ -78,7 +78,7 @@ export const DotsUI = ({ onBack }: DotsUIProps) => {
                             onClick={() => initGame()}
                             className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg"
                         >
-                            다시 하기
+                            🎮 다시 하기
                         </button>
                         <button
                             onClick={() => setShowLeaderboard(true)}

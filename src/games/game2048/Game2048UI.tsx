@@ -16,6 +16,7 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
         initGame,
         continueGame,
         leaderboard,
+        requestViewReset,
     } = use2048Store();
 
     const [showSettings, setShowSettings] = useState(false);
@@ -195,6 +196,13 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                             className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition border-r border-cyan-500/20"
                         >
                             <span className="text-xl sm:text-2xl">←</span>
+                        </button>
+                        <button
+                            onClick={() => requestViewReset()}
+                            className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition border-r border-cyan-500/20"
+                            title="뷰 초기화"
+                        >
+                            <span className="text-xl sm:text-2xl">🔄</span>
                         </button>
                         <button
                             onClick={() => initGame()}

@@ -144,7 +144,7 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
                                                     {entry.hintCount ? ` 💡${entry.hintCount}` : ''}
                                                 </span>
                                                 <span className="font-mono">
-                                                    {entry.moves}회 / {entry.time.toFixed(2)}초
+                                                    {entry.moves}회 - {entry.time.toFixed(2)}초
                                                 </span>
                                             </div>
                                             <div className="text-cyan-400/50 text-xs">

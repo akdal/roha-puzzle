@@ -27,6 +27,7 @@ interface Game2048State {
     startTime: number | null;
     leaderboard: LeaderboardEntry[];
     continueAfterWin: boolean;
+    viewResetRequested: boolean;
 }
 
 interface Game2048Actions {
@@ -34,6 +35,8 @@ interface Game2048Actions {
     move: (direction: 'up' | 'down' | 'left' | 'right') => void;
     continueGame: () => void;
     clearAnimationFlags: () => void;
+    requestViewReset: () => void;
+    clearViewReset: () => void;
 }
 
 const GRID_SIZE = 4;
@@ -176,6 +179,7 @@ export const use2048Store = create<Game2048State & Game2048Actions>()(
             startTime: null,
             leaderboard: [],
             continueAfterWin: false,
+            viewResetRequested: false,
 
             initGame: () => {
                 tileIdCounter = 0;
@@ -281,6 +285,9 @@ export const use2048Store = create<Game2048State & Game2048Actions>()(
                     })),
                 }));
             },
+
+            requestViewReset: () => set({ viewResetRequested: true }),
+            clearViewReset: () => set({ viewResetRequested: false }),
         }),
         {
             name: 'game-2048-storage',

@@ -11,7 +11,8 @@ interface DotsProps {
     onBack: () => void;
 }
 
-const DEFAULT_CAMERA_POSITION = new Vector3(0, 5, 3);
+// Top-down view (looking straight down at the board)
+const DEFAULT_CAMERA_POSITION = new Vector3(0, 8, 0.1);
 
 function DotsScene() {
     const viewResetRequested = useDotsStore((s) => s.viewResetRequested);
@@ -39,18 +40,16 @@ function DotsScene() {
             {/* Game */}
             <DotsGame />
 
-            {/* Controls */}
+            {/* Controls - limited rotation for top-down view */}
             <OrbitControls
                 ref={controlsRef}
                 makeDefault
                 enableDamping
                 dampingFactor={0.05}
-                minDistance={4}
-                maxDistance={10}
-                minPolarAngle={Math.PI / 6}
+                minDistance={5}
+                maxDistance={12}
+                minPolarAngle={0}
                 maxPolarAngle={Math.PI / 2.5}
-                minAzimuthAngle={-Math.PI / 4}
-                maxAzimuthAngle={Math.PI / 4}
                 enablePan={false}
             />
         </>
@@ -71,7 +70,7 @@ export const Dots = ({ onBack }: DotsProps) => {
         <div className="w-full h-full relative game-screen bg-gradient-to-b from-[#0a1628] via-[#0f2937] to-[#1a3a4a]">
             <DotsUI onBack={onBack} />
             <Canvas
-                camera={{ position: [0, 5, 3], fov: 50 }}
+                camera={{ position: [0, 8, 0.1], fov: 50 }}
                 gl={{ alpha: true }}
                 style={{ background: 'transparent' }}
             >

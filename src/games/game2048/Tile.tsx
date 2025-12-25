@@ -45,23 +45,24 @@ export const Tile = ({ tile, cellSize, gridOffset }: TileProps) => {
     const groupRef = useRef<Group>(null);
     const meshRef = useRef<Mesh>(null);
     const scaleRef = useRef(tile.isNew ? 0 : 1);
+    // XY plane: x = col, y = -row (inverted for top-down), z = depth
     const positionRef = useRef({
         x: (tile.previousCol ?? tile.col) * cellSize - gridOffset,
-        y: 0,
-        z: (tile.previousRow ?? tile.row) * cellSize - gridOffset,
+        y: gridOffset - (tile.previousRow ?? tile.row) * cellSize,
+        z: 0,
     });
 
     const targetX = tile.col * cellSize - gridOffset;
-    const targetZ = tile.row * cellSize - gridOffset;
+    const targetY = gridOffset - tile.row * cellSize;
 
     useFrame((_, delta) => {
         if (!groupRef.current) return;
 
-        // Animate position
+        // Animate position (XY plane)
         positionRef.current.x = THREE.MathUtils.lerp(positionRef.current.x, targetX, delta * 15);
-        positionRef.current.z = THREE.MathUtils.lerp(positionRef.current.z, targetZ, delta * 15);
+        positionRef.current.y = THREE.MathUtils.lerp(positionRef.current.y, targetY, delta * 15);
         groupRef.current.position.x = positionRef.current.x;
-        groupRef.current.position.z = positionRef.current.z;
+        groupRef.current.position.y = positionRef.current.y;
 
         // Animate scale for new tiles
         if (tile.isNew && scaleRef.current < 1) {
@@ -79,17 +80,18 @@ export const Tile = ({ tile, cellSize, gridOffset }: TileProps) => {
     const color = getTileColor(tile.value);
     const textColor = getTextColor(tile.value);
     const emissiveIntensity = getEmissiveIntensity(tile.value);
-    const tileHeight = 0.3;
+    const tileDepth = 0.3;
 
     return (
         <group
             ref={groupRef}
-            position={[positionRef.current.x, tileHeight / 2, positionRef.current.z]}
+            position={[positionRef.current.x, positionRef.current.y, tileDepth / 2]}
             scale={tile.isNew ? 0 : 1}
         >
+            {/* Tile box - XY plane */}
             <RoundedBox
                 ref={meshRef}
-                args={[cellSize * 0.9, tileHeight, cellSize * 0.9]}
+                args={[cellSize * 0.9, cellSize * 0.9, tileDepth]}
                 radius={0.08}
                 smoothness={4}
             >
@@ -102,10 +104,9 @@ export const Tile = ({ tile, cellSize, gridOffset }: TileProps) => {
                 />
             </RoundedBox>
 
-            {/* Number text */}
+            {/* Number text - facing front (no rotation needed) */}
             <Text
-                position={[0, tileHeight / 2 + 0.01, 0]}
-                rotation={[-Math.PI / 2, 0, 0]}
+                position={[0, 0, tileDepth / 2 + 0.01]}
                 fontSize={cellSize * (tile.value >= 1000 ? 0.22 : tile.value >= 100 ? 0.28 : 0.35)}
                 color={textColor}
                 anchorX="center"
@@ -118,7 +119,7 @@ export const Tile = ({ tile, cellSize, gridOffset }: TileProps) => {
             {/* Glow for high value tiles */}
             {tile.value >= 128 && (
                 <pointLight
-                    position={[0, 0.5, 0]}
+                    position={[0, 0, 0.5]}
                     color={color}
                     intensity={0.3}
                     distance={2}

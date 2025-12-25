@@ -124,10 +124,10 @@ export const Game2048 = () => {
 
     return (
         <group scale={gameScale}>
-            {/* Board base */}
+            {/* Board base - XY plane */}
             <RoundedBox
-                args={[BOARD_SIZE, 0.15, BOARD_SIZE]}
-                position={[0, -0.075, 0]}
+                args={[BOARD_SIZE, BOARD_SIZE, 0.15]}
+                position={[0, 0, -0.075]}
                 radius={0.1}
                 smoothness={4}
             >
@@ -138,18 +138,18 @@ export const Game2048 = () => {
                 />
             </RoundedBox>
 
-            {/* Grid cells (empty slots) */}
+            {/* Grid cells (empty slots) - XY plane */}
             {Array.from({ length: GRID_SIZE * GRID_SIZE }).map((_, i) => {
                 const row = Math.floor(i / GRID_SIZE);
                 const col = i % GRID_SIZE;
                 return (
                     <RoundedBox
                         key={i}
-                        args={[CELL_SIZE * 0.9, 0.08, CELL_SIZE * 0.9]}
+                        args={[CELL_SIZE * 0.9, CELL_SIZE * 0.9, 0.08]}
                         position={[
                             col * CELL_SIZE - GRID_OFFSET,
+                            GRID_OFFSET - row * CELL_SIZE,
                             0.04,
-                            row * CELL_SIZE - GRID_OFFSET,
                         ]}
                         radius={0.06}
                         smoothness={4}
@@ -175,8 +175,8 @@ export const Game2048 = () => {
                 />
             ))}
 
-            {/* Border glow */}
-            <mesh position={[0, 0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            {/* Border glow - XY plane */}
+            <mesh position={[0, 0, 0.1]}>
                 <ringGeometry args={[BOARD_SIZE / 2 - 0.05, BOARD_SIZE / 2 + 0.05, 4]} />
                 <meshBasicMaterial color="#22d3ee" transparent opacity={0.15} />
             </mesh>

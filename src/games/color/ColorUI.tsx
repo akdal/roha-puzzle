@@ -36,7 +36,6 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
 
     const [showSettings, setShowSettings] = useState(false);
     const [showDifficulty, setShowDifficulty] = useState(false);
-    const [isResultMinimized, setIsResultMinimized] = useState(false);
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [now, setNow] = useState(() => Date.now());
     const [hideTimer, setHideTimer] = useState(false);
@@ -76,37 +75,9 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
             (sameRecords.length > 1 && accuracy > sameRecords[1].accuracy);
         const isPerfectMoves = moveCount <= minMoves;
 
-        // Minimized result badge
-        if (isResultMinimized) {
-            return (
-                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-auto">
-                    <button
-                        onClick={() => setIsResultMinimized(false)}
-                        className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-2xl shadow-lg border border-white/20 flex items-center gap-3 hover:scale-105 transition"
-                    >
-                        <span className="text-2xl">{isNewRecord ? '🏆' : '⭐'}</span>
-                        <div className="text-left">
-                            <div className="font-bold">{accuracy}% 완성!</div>
-                            <div className="text-xs opacity-80">{timeDisplay}초 • {moveCount}회</div>
-                        </div>
-                        <span className="text-lg ml-2">▲</span>
-                    </button>
-                </div>
-            );
-        }
-
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/90 to-[#1a3a4a]/90 backdrop-blur-sm">
-                <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20 relative">
-                    {/* Minimize button */}
-                    <button
-                        onClick={() => setIsResultMinimized(true)}
-                        className="absolute top-3 right-3 text-cyan-400/60 hover:text-cyan-200 text-sm px-2 py-1 rounded-lg hover:bg-cyan-500/10 transition"
-                        title="결과 보기"
-                    >
-                        ▼ 축소
-                    </button>
-
+                <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20">
                     <div className="text-4xl mb-2">{isNewRecord ? '🏆' : accuracy === 100 ? '⭐' : '🎨'}</div>
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-blue-300 mb-2">
                         {isNewRecord ? '새로운 기록!' : accuracy === 100 ? '완벽해요!' : '잘했어요!'}
@@ -171,7 +142,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                             ❄️ 다음 레벨
                         </button>
                         <button
-                            onClick={() => { setIsResultMinimized(false); initGame(); }}
+                            onClick={() => initGame()}
                             className="px-6 py-2 text-cyan-300 hover:text-cyan-100"
                         >
                             이 레벨 다시하기
