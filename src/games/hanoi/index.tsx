@@ -26,7 +26,7 @@ function HanoiScene() {
     return (
         <>
             {/* Background */}
-            <color attach="background" args={['#1a1a2e']} />
+            <color attach="background" args={['#1e1e3f']} />
 
             {/* Lighting */}
             <ambientLight intensity={0.6} />

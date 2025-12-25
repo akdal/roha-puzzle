@@ -7,9 +7,10 @@ import { UI } from './components/UI';
 import { GameBackground } from './components/GameBackground';
 import { useStore } from './store/useStore';
 import { Hanoi } from './games/hanoi';
+import { Puzzle } from './games/puzzle';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
-type GameType = 'menu' | 'rubiks' | 'hanoi';
+type GameType = 'menu' | 'rubiks' | 'hanoi' | 'puzzle';
 
 const DEFAULT_CAMERA_POSITION = new Vector3(5, 5, 5);
 
@@ -92,34 +93,45 @@ interface GameMenuProps {
 
 function GameMenu({ onSelectGame }: GameMenuProps) {
   return (
-    <div className="w-full h-full bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center">
+    <div className="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-900 flex items-center justify-center p-4">
       <div className="text-center">
-        <h1 className="text-5xl sm:text-6xl font-bold text-white mb-4">
+        <h1 className="text-4xl sm:text-6xl font-bold text-white mb-3 drop-shadow-lg">
           3D Puzzle Games
         </h1>
-        <p className="text-gray-400 mb-12 text-lg">Choose a game to play</p>
+        <p className="text-purple-200 mb-8 sm:mb-12 text-lg">Choose a game to play</p>
 
-        <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl">
           {/* Rubik's Cube */}
           <button
             onClick={() => onSelectGame('rubiks')}
-            className="group bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-3xl p-8 transition-all hover:scale-105 hover:shadow-2xl"
+            className="group bg-gradient-to-br from-red-500/20 to-orange-500/20 hover:from-red-500/40 hover:to-orange-500/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-8 transition-all hover:scale-105 hover:shadow-2xl"
           >
-            <div className="text-6xl mb-4">🎲</div>
-            <h2 className="text-2xl font-bold text-white mb-2">Rubik's Cube</h2>
-            <p className="text-gray-400 text-sm">2×2 & 3×3 cubes</p>
-            <p className="text-gray-500 text-xs mt-2">Drag to rotate faces</p>
+            <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">🎲</div>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Rubik's Cube</h2>
+            <p className="text-orange-200 text-sm">2×2 & 3×3 cubes</p>
+            <p className="text-white/50 text-xs mt-2">Drag to rotate faces</p>
           </button>
 
           {/* Hanoi Tower */}
           <button
             onClick={() => onSelectGame('hanoi')}
-            className="group bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-3xl p-8 transition-all hover:scale-105 hover:shadow-2xl"
+            className="group bg-gradient-to-br from-amber-500/20 to-yellow-500/20 hover:from-amber-500/40 hover:to-yellow-500/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-8 transition-all hover:scale-105 hover:shadow-2xl"
           >
-            <div className="text-6xl mb-4">🗼</div>
-            <h2 className="text-2xl font-bold text-white mb-2">Hanoi Tower</h2>
-            <p className="text-gray-400 text-sm">3-7 disks</p>
-            <p className="text-gray-500 text-xs mt-2">Click to move disks</p>
+            <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">🗼</div>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Hanoi Tower</h2>
+            <p className="text-yellow-200 text-sm">3-7 disks</p>
+            <p className="text-white/50 text-xs mt-2">Click to move disks</p>
+          </button>
+
+          {/* Slide Puzzle */}
+          <button
+            onClick={() => onSelectGame('puzzle')}
+            className="group bg-gradient-to-br from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/40 hover:to-blue-500/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-8 transition-all hover:scale-105 hover:shadow-2xl"
+          >
+            <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">🧩</div>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Slide Puzzle</h2>
+            <p className="text-cyan-200 text-sm">3×3 & 4×4 grids</p>
+            <p className="text-white/50 text-xs mt-2">Slide tiles to solve</p>
           </button>
         </div>
       </div>
@@ -137,6 +149,8 @@ function App() {
       return <RubiksGame onBack={handleBack} />;
     case 'hanoi':
       return <Hanoi onBack={handleBack} />;
+    case 'puzzle':
+      return <Puzzle onBack={handleBack} />;
     default:
       return <GameMenu onSelectGame={setCurrentGame} />;
   }

@@ -2,15 +2,15 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Mesh, Vector3 } from 'three';
 
-// Disk colors - rainbow gradient
+// Disk colors - vibrant rainbow
 const DISK_COLORS = [
-    '#E53935', // Red
-    '#FF9800', // Orange
-    '#FDD835', // Yellow
-    '#43A047', // Green
-    '#1E88E5', // Blue
-    '#5E35B1', // Indigo
-    '#8E24AA', // Purple
+    '#FF6B6B', // Coral Red
+    '#FFA94D', // Bright Orange
+    '#FFE066', // Sunny Yellow
+    '#69DB7C', // Fresh Green
+    '#4DABF7', // Sky Blue
+    '#9775FA', // Lavender
+    '#F06595', // Pink
 ];
 
 interface DiskProps {

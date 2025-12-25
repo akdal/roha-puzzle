@@ -1,9 +1,9 @@
 import { useStore } from '../store/useStore';
 
 const THEMES = {
-    dark: '#1a1a2e',   // Deep dark blue
-    light: '#f8f9fa',  // Soft white
-    blue: '#0f3460',   // Rich navy blue
+    dark: '#1e1e3f',   // Deep purple-blue
+    light: '#f0f4f8',  // Soft cool white
+    blue: '#1a365d',   // Rich navy blue
 };
 
 export const GameBackground = () => {

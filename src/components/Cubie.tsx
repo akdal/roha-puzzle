@@ -12,15 +12,15 @@ interface CubieProps {
     onPointerUp?: (e: ThreeEvent<PointerEvent>) => void;
 }
 
-// Vibrant, bright colors
+// Vibrant, saturated colors
 const COLORS = {
     U: '#FFFFFF',  // White - top
-    D: '#FFEB3B',  // Bright Yellow - bottom
-    R: '#F44336',  // Bright Red - right
-    L: '#FF9800',  // Bright Orange - left
-    F: '#4CAF50',  // Bright Green - front
-    B: '#2196F3',  // Bright Blue - back
-    CORE: '#212121' // Dark gray core
+    D: '#FFD700',  // Gold Yellow - bottom
+    R: '#FF4757',  // Vibrant Red - right
+    L: '#FFA502',  // Bright Orange - left
+    F: '#2ED573',  // Vivid Green - front
+    B: '#3742FA',  // Electric Blue - back
+    CORE: '#2C3E50' // Slate core
 };
 
 // Shared geometry for all cubies
