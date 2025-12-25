@@ -57,14 +57,29 @@ export const Game2048 = () => {
         return () => clearTimeout(timeout);
     }, [tiles, clearAnimationFlags]);
 
-    // Touch/swipe handling
+    // Touch/swipe handling with scroll prevention
     useEffect(() => {
         let startX = 0;
         let startY = 0;
+        let isSwiping = false;
 
         const handleTouchStart = (e: TouchEvent) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
+            isSwiping = false;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (gameStatus !== 'PLAYING') return;
+
+            const diffX = e.touches[0].clientX - startX;
+            const diffY = e.touches[0].clientY - startY;
+
+            // If swiping more than 10px, prevent default scroll
+            if (Math.abs(diffX) > 10 || Math.abs(diffY) > 10) {
+                isSwiping = true;
+                e.preventDefault();
+            }
         };
 
         const handleTouchEnd = (e: TouchEvent) => {
@@ -75,8 +90,12 @@ export const Game2048 = () => {
             const diffX = endX - startX;
             const diffY = endY - startY;
 
-            const minSwipe = 50;
+            const minSwipe = 30; // Reduced for better responsiveness
             if (Math.abs(diffX) < minSwipe && Math.abs(diffY) < minSwipe) return;
+
+            if (isSwiping) {
+                e.preventDefault();
+            }
 
             if (Math.abs(diffX) > Math.abs(diffY)) {
                 move(diffX > 0 ? 'right' : 'left');
@@ -86,10 +105,12 @@ export const Game2048 = () => {
         };
 
         window.addEventListener('touchstart', handleTouchStart, { passive: true });
-        window.addEventListener('touchend', handleTouchEnd, { passive: true });
+        window.addEventListener('touchmove', handleTouchMove, { passive: false });
+        window.addEventListener('touchend', handleTouchEnd, { passive: false });
 
         return () => {
             window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchmove', handleTouchMove);
             window.removeEventListener('touchend', handleTouchEnd);
         };
     }, [gameStatus, move]);

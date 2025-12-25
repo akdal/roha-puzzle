@@ -267,6 +267,10 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             className="group relative bg-gradient-to-b from-white/[0.08] to-transparent backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:border-yellow-400/40 hover:bg-yellow-500/10 hover:scale-[1.02] hover:-translate-y-1"
           >
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            {/* NEW badge */}
+            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
+              NEW
+            </div>
             <div className="relative">
               <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-red-500 via-green-500 to-yellow-400 flex items-center justify-center shadow-lg shadow-yellow-500/30">
                 <span className="text-2xl sm:text-3xl">🎄</span>
@@ -285,6 +289,10 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             className="group relative bg-gradient-to-b from-white/[0.08] to-transparent backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:border-cyan-400/40 hover:bg-cyan-500/10 hover:scale-[1.02] hover:-translate-y-1"
           >
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            {/* NEW badge */}
+            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
+              NEW
+            </div>
             <div className="relative">
               <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
                 <span className="text-2xl sm:text-3xl">❄️</span>
@@ -303,6 +311,10 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             className="group relative bg-gradient-to-b from-white/[0.08] to-transparent backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:border-amber-400/40 hover:bg-amber-500/10 hover:scale-[1.02] hover:-translate-y-1"
           >
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            {/* NEW badge */}
+            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
+              NEW
+            </div>
             <div className="relative">
               <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
                 <span className="text-2xl sm:text-3xl">🎮</span>

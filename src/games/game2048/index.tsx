@@ -1,8 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
-import { Vector3 } from 'three';
+import { useEffect } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { Game2048 as Game2048Board } from './Game2048';
 import { Game2048UI } from './Game2048UI';
 import { use2048Store } from './use2048Store';
@@ -11,23 +8,7 @@ interface Game2048Props {
     onBack: () => void;
 }
 
-const DEFAULT_CAMERA_POSITION = new Vector3(0, 6, 4);
-
 function Game2048Scene() {
-    const viewResetRequested = use2048Store((s) => s.viewResetRequested);
-    const clearViewReset = use2048Store((s) => s.clearViewReset);
-    const controlsRef = useRef<OrbitControlsImpl>(null);
-    const { camera } = useThree();
-
-    useEffect(() => {
-        if (viewResetRequested && controlsRef.current) {
-            camera.position.copy(DEFAULT_CAMERA_POSITION);
-            controlsRef.current.target.set(0, 0, 0);
-            controlsRef.current.update();
-            clearViewReset();
-        }
-    }, [viewResetRequested, camera, clearViewReset]);
-
     return (
         <>
             {/* Lighting - winter mood */}
@@ -38,21 +19,6 @@ function Game2048Scene() {
 
             {/* Game */}
             <Game2048Board />
-
-            {/* Controls - top-down view with limited rotation */}
-            <OrbitControls
-                ref={controlsRef}
-                makeDefault
-                enableDamping
-                dampingFactor={0.05}
-                minDistance={5}
-                maxDistance={12}
-                minPolarAngle={Math.PI / 6}
-                maxPolarAngle={Math.PI / 2.5}
-                minAzimuthAngle={-Math.PI / 4}
-                maxAzimuthAngle={Math.PI / 4}
-                enablePan={false}
-            />
         </>
     );
 }
