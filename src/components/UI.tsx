@@ -15,10 +15,6 @@ export const UI = ({ onBack }: UIProps) => {
         resetGame,
         isSolving,
         leaderboard,
-        theme,
-        setTheme,
-        invertControls,
-        toggleInvertControls,
         orbitLocked,
         toggleOrbitLock,
         cubeLocked,
@@ -250,29 +246,6 @@ export const UI = ({ onBack }: UIProps) => {
                                     </button>
                                 </div>
                             </div>
-
-                            {/* Theme */}
-                            <select
-                                value={theme}
-                                onChange={(e) => setTheme(e.target.value as 'dark' | 'light' | 'blue')}
-                                className="block w-full bg-gray-800 text-sm p-2.5 rounded-lg border border-gray-600"
-                            >
-                                <option value="dark">🌙 다크</option>
-                                <option value="light">☀️ 라이트</option>
-                                <option value="blue">🌊 블루</option>
-                            </select>
-
-                            {/* Invert Controls */}
-                            <button
-                                onClick={toggleInvertControls}
-                                className={`w-full text-sm p-2.5 rounded-lg border transition ${
-                                    invertControls
-                                        ? 'bg-blue-600 border-blue-500 text-white'
-                                        : 'bg-gray-800 border-gray-600 text-gray-300'
-                                }`}
-                            >
-                                {invertControls ? '↔ 반전' : '↔ 기본'}
-                            </button>
 
                             {/* Leaderboard */}
                             <button

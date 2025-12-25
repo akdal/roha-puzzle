@@ -89,13 +89,13 @@ function RubiksGame({ onBack }: RubiksGameProps) {
 }
 
 // Snowflake component for background animation
-function Snowflake({ style }: { style: React.CSSProperties }) {
+function Snowflake({ style, emoji = '❄️' }: { style: React.CSSProperties; emoji?: string }) {
   return (
     <div
-      className="absolute text-white/20 animate-fall pointer-events-none"
+      className="absolute animate-snowfall pointer-events-none"
       style={style}
     >
-      ❄️
+      {emoji}
     </div>
   );
 }
@@ -105,14 +105,15 @@ interface GameMenuProps {
 }
 
 function GameMenu({ onSelectGame }: GameMenuProps) {
-  // Generate random snowflakes
-  const snowflakes = [...Array(30)].map(() => ({
+  // Generate random snowflakes with varied sizes and speeds
+  const snowflakes = [...Array(50)].map((_, i) => ({
     left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    fontSize: `${Math.random() * 16 + 8}px`,
-    animationDelay: `${Math.random() * 5}s`,
-    animationDuration: `${Math.random() * 10 + 10}s`,
-    opacity: Math.random() * 0.3 + 0.1,
+    top: `-${Math.random() * 20}%`,
+    fontSize: `${Math.random() * 14 + 10}px`,
+    animationDelay: `${Math.random() * 8}s`,
+    animationDuration: `${Math.random() * 8 + 8}s`,
+    opacity: Math.random() * 0.4 + 0.2,
+    emoji: i % 5 === 0 ? '❅' : i % 7 === 0 ? '✦' : '❄️',
   }));
 
   return (
@@ -129,7 +130,7 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
 
         {/* Snowflakes */}
         {snowflakes.map((sf, i) => (
-          <Snowflake key={i} style={sf} />
+          <Snowflake key={i} style={sf} emoji={sf.emoji} />
         ))}
       </div>
 
@@ -250,7 +251,7 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
                 <span className="text-2xl sm:text-3xl">🎄</span>
               </div>
               <h2 className="text-lg sm:text-xl font-bold text-white mb-1.5">메모리 카드</h2>
-              <p className="text-green-300/70 text-xs font-medium mb-3">4×4, 6×6</p>
+              <p className="text-green-300/70 text-xs font-medium mb-3">4×4, 5×5</p>
               <p className="text-cyan-100/40 text-xs leading-relaxed">
                 같은 그림의 카드 짝을 찾으세요
               </p>
