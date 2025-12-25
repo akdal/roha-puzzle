@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Vector3 } from 'three';
@@ -136,8 +136,8 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
 
   const { year, month, day, hours, minutes, seconds, weekday } = formatDate(currentTime);
 
-  // Generate random snowflakes with varied sizes and speeds
-  const snowflakes = [...Array(50)].map((_, i) => ({
+  // Generate random snowflakes with varied sizes and speeds - memoized to prevent re-generation on timer updates
+  const snowflakes = useMemo(() => [...Array(50)].map((_, i) => ({
     left: `${Math.random() * 100}%`,
     top: `-${Math.random() * 20}%`,
     fontSize: `${Math.random() * 14 + 10}px`,
@@ -145,7 +145,7 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
     animationDuration: `${Math.random() * 8 + 8}s`,
     opacity: Math.random() * 0.4 + 0.2,
     emoji: i % 5 === 0 ? '❅' : i % 7 === 0 ? '✦' : '❄️',
-  }));
+  })), []);
 
   return (
     <div className="w-full min-h-full bg-gradient-to-b from-[#0a1628] via-[#0f2937] to-[#1a3a4a] flex items-center justify-center p-4 py-8 relative overflow-y-auto">
@@ -179,18 +179,6 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
       />
 
       <div className="text-center relative z-10">
-        {/* Current Date & Time */}
-        <div className="mb-4">
-          <div className="inline-block px-5 py-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-            <div className="text-cyan-200/80 text-xs tracking-wider mb-1">
-              {year}.{month}.{day} ({weekday})
-            </div>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white">
-              {hours}:{minutes}:<span className="text-cyan-400/80">{seconds}</span>
-            </div>
-          </div>
-        </div>
-
         {/* Season's Greetings */}
         <div className="mb-3 text-2xl">
           <span className="animate-pulse">⭐</span>
@@ -221,6 +209,19 @@ function GameMenu({ onSelectGame }: GameMenuProps) {
             Happy Holidays & New Year 2026
           </p>
           <span className="text-yellow-300/80">✦</span>
+        </div>
+
+        {/* Current Date & Time - spans both columns */}
+        <div className="max-w-2xl mx-auto mb-4">
+          <div className="flex items-center justify-center gap-3 px-5 py-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+            <span className="text-cyan-200/80 text-xs sm:text-sm tracking-wider">
+              {year}.{month}.{day} ({weekday})
+            </span>
+            <span className="text-cyan-400/40">|</span>
+            <span className="text-xl sm:text-2xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white">
+              {hours}:{minutes}:<span className="text-cyan-400/80">{seconds}</span>
+            </span>
+          </div>
         </div>
 
         {/* Game Cards - 2 columns */}
