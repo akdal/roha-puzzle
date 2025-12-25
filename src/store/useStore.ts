@@ -34,6 +34,7 @@ interface GameState {
     scrambleQueue: { axis: Axis, layer: number, direction: 1 | -1 }[];
     leaderboard: LeaderboardEntry[];
     theme: 'dark' | 'light' | 'blue';
+    isDraggingCube: boolean;
 }
 
 interface Action {
@@ -43,6 +44,7 @@ interface Action {
     scramble: (count?: number) => void;
     resetGame: () => void;
     setTheme: (theme: 'dark' | 'light' | 'blue') => void;
+    setIsDraggingCube: (isDragging: boolean) => void;
 }
 
 const generateCubies = (): CubieState[] => {
@@ -87,10 +89,13 @@ export const useStore = create<GameState & Action>()(
             scrambleQueue: [],
             leaderboard: [],
             theme: 'dark',
+            isDraggingCube: false,
 
             initCube: () => set({ cubies: generateCubies() }),
 
             setTheme: (theme) => set({ theme }),
+
+            setIsDraggingCube: (isDragging) => set({ isDraggingCube: isDragging }),
 
             triggerRotation: (axis, layer, direction, speed = 1) => {
                 const state = get();
