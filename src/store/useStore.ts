@@ -22,6 +22,13 @@ interface LeaderboardEntry {
     time: number;
     moves: number;
     date: string;
+    hintCount?: number;
+}
+
+interface HintMove {
+    axis: Axis;
+    layer: number;
+    direction: 1 | -1;
 }
 
 interface GameState {
@@ -41,6 +48,12 @@ interface GameState {
     orbitLocked: boolean;
     cubeLocked: boolean;
     viewResetRequested: boolean;
+    // Hint system
+    solutionMoves: HintMove[];
+    solutionIndex: number;
+    hintActive: boolean;
+    hintMove: HintMove | null;
+    hintCount: number;
 }
 
 interface Action {
@@ -58,6 +71,8 @@ interface Action {
     toggleCubeLock: () => void;
     requestViewReset: () => void;
     clearViewReset: () => void;
+    showHint: () => void;
+    clearHint: () => void;
 }
 
 const generateCubies = (size: 2 | 3): CubieState[] => {
@@ -133,6 +148,11 @@ export const useStore = create<GameState & Action>()(
             orbitLocked: false,
             cubeLocked: false,
             viewResetRequested: false,
+            solutionMoves: [],
+            solutionIndex: 0,
+            hintActive: false,
+            hintMove: null,
+            hintCount: 0,
 
             initCube: () => set((state) => ({ cubies: generateCubies(state.cubeSize) })),
 
@@ -146,7 +166,12 @@ export const useStore = create<GameState & Action>()(
                 moveCount: 0,
                 isSolving: false,
                 animation: { isAnimating: false, axis: null, layer: null, direction: 0, speed: 1 },
-                scrambleQueue: []
+                scrambleQueue: [],
+                solutionMoves: [],
+                solutionIndex: 0,
+                hintActive: false,
+                hintMove: null,
+                hintCount: 0,
             }),
 
             setDifficulty: (difficulty) => set({ difficulty }),
@@ -202,7 +227,8 @@ export const useStore = create<GameState & Action>()(
                     newLeaderboard = [...state.leaderboard, {
                         time,
                         moves: state.moveCount + 1,
-                        date: new Date().toISOString()
+                        date: new Date().toISOString(),
+                        hintCount: state.hintCount
                     }].sort((a, b) => a.time - b.time).slice(0, 5);
                 }
 
@@ -233,7 +259,10 @@ export const useStore = create<GameState & Action>()(
                     isSolving: solved ? false : state.isSolving,
                     scrambleQueue: nextScramble,
                     animation: nextAnimation,
-                    leaderboard: newLeaderboard
+                    leaderboard: newLeaderboard,
+                    hintActive: false,
+                    hintMove: null,
+                    solutionIndex: isUserMove ? state.solutionIndex + 1 : state.solutionIndex,
                 };
             }),
 
@@ -253,13 +282,25 @@ export const useStore = create<GameState & Action>()(
                     moves.push({ axis, layer, direction: direction as 1 | -1 });
                 }
 
+                // Create solution moves (reverse order, opposite direction)
+                const solutionMoves: HintMove[] = moves.slice().reverse().map(move => ({
+                    axis: move.axis,
+                    layer: move.layer,
+                    direction: (move.direction * -1) as 1 | -1
+                }));
+
                 set({
                     gameStatus: 'IDLE',
                     moveCount: 0,
                     startTime: null,
                     isSolving: false,
                     cubies: generateCubies(state.cubeSize),
-                    scrambleQueue: moves
+                    scrambleQueue: moves,
+                    solutionMoves,
+                    solutionIndex: 0,
+                    hintActive: false,
+                    hintMove: null,
+                    hintCount: 0,
                 });
 
                 const first = moves[0];
@@ -277,8 +318,41 @@ export const useStore = create<GameState & Action>()(
                 startTime: null,
                 moveCount: 0,
                 animation: { isAnimating: false, axis: null, layer: null, direction: 0, speed: 1 },
-                scrambleQueue: []
+                scrambleQueue: [],
+                solutionMoves: [],
+                solutionIndex: 0,
+                hintActive: false,
+                hintMove: null,
+                hintCount: 0,
             })),
+
+            showHint: () => {
+                const state = get();
+                if (state.gameStatus === 'SOLVED' || state.hintActive || state.animation.isAnimating) return;
+                if (state.solutionMoves.length === 0) return; // No solution available
+
+                // Get next solution move (accounting for user's progress)
+                const nextMove = state.solutionMoves[state.solutionIndex];
+                if (!nextMove) return; // Already solved or past solution
+
+                set({
+                    hintActive: true,
+                    hintMove: nextMove,
+                    hintCount: state.hintCount + 1,
+                });
+
+                // Auto-clear hint after 3 seconds
+                setTimeout(() => {
+                    const currentState = get();
+                    if (currentState.hintActive) {
+                        set({ hintActive: false, hintMove: null });
+                    }
+                }, 3000);
+            },
+
+            clearHint: () => {
+                set({ hintActive: false, hintMove: null });
+            },
         }),
         {
             name: 'rubiks3d-storage',

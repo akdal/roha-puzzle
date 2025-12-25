@@ -19,6 +19,7 @@ interface DiskProps {
     position: Vector3;
     isSelected: boolean;
     isAnimating: boolean;
+    isHintDisk?: boolean;
     targetPosition?: Vector3;
     onAnimationComplete?: () => void;
 }
@@ -29,6 +30,7 @@ export const Disk = ({
     position,
     isSelected,
     isAnimating,
+    isHintDisk,
     targetPosition,
     onAnimationComplete,
 }: DiskProps) => {
@@ -93,6 +95,13 @@ export const Disk = ({
         }
     });
 
+    // Pulsing effect for hint disk
+    const getEmissiveIntensity = () => {
+        if (isHintDisk) return 0.5;
+        if (isSelected) return 0.3;
+        return 0;
+    };
+
     return (
         <mesh ref={meshRef} position={position} castShadow receiveShadow>
             <cylinderGeometry args={[radius, radius, height, 32]} />
@@ -100,8 +109,8 @@ export const Disk = ({
                 color={color}
                 metalness={0.1}
                 roughness={0.4}
-                emissive={isSelected ? color : '#000000'}
-                emissiveIntensity={isSelected ? 0.3 : 0}
+                emissive={isHintDisk ? '#FFFFFF' : isSelected ? color : '#000000'}
+                emissiveIntensity={getEmissiveIntensity()}
             />
         </mesh>
     );

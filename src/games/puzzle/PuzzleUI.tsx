@@ -16,6 +16,9 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
         initGame,
         scramble,
         leaderboard,
+        hintCount,
+        showHint,
+        hintActive,
     } = usePuzzleStore();
 
     const [showSettings, setShowSettings] = useState(false);
@@ -56,7 +59,12 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
                     <div className="text-2xl mb-2">
                         시간: <span className="font-mono">{timeDisplay}</span>초
                     </div>
-                    <div className="text-xl mb-6">횟수: {moveCount}회</div>
+                    <div className="text-xl mb-2">횟수: {moveCount}회</div>
+                    {hintCount > 0 && (
+                        <div className="text-purple-500 text-sm mb-4">
+                            💡 힌트 사용: {hintCount}회
+                        </div>
+                    )}
 
                     <div className="flex flex-col gap-3">
                         <button
@@ -101,6 +109,7 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
                                         >
                                             <span>
                                                 {i + 1}. {entry.gridSize}×{entry.gridSize}
+                                                {entry.hintCount ? ` 💡${entry.hintCount}` : ''}
                                             </span>
                                             <span className="font-mono">
                                                 {entry.moves}회 / {entry.time.toFixed(2)}초
@@ -143,9 +152,20 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
                         </button>
                         <button
                             onClick={() => initGame()}
-                            className="flex-1 py-3 sm:py-4 text-center text-gray-300 active:bg-white/10 transition"
+                            className="flex-1 py-3 sm:py-4 text-center text-gray-300 active:bg-white/10 transition border-r border-white/10"
                         >
                             <span className="text-xl sm:text-2xl">↺</span>
+                        </button>
+                        <button
+                            onClick={showHint}
+                            disabled={hintActive}
+                            className={`flex-1 py-3 sm:py-4 text-center transition ${
+                                hintActive
+                                    ? 'text-gray-600 cursor-not-allowed'
+                                    : 'text-yellow-400 active:bg-white/10'
+                            }`}
+                        >
+                            <span className="text-xl sm:text-2xl">💡</span>
                         </button>
                     </div>
 
@@ -250,6 +270,7 @@ export const PuzzleUI = ({ onBack }: PuzzleUIProps) => {
                                 >
                                     <span>
                                         {i + 1}. {entry.gridSize}×{entry.gridSize}
+                                        {entry.hintCount ? ` 💡${entry.hintCount}` : ''}
                                     </span>
                                     <span className="font-mono">
                                         {entry.moves}회 - {entry.time.toFixed(2)}초

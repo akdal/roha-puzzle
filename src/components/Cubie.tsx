@@ -7,6 +7,7 @@ interface CubieProps {
     rotation: [number, number, number, number];
     originalPosition: [number, number, number];
     cubeSize: 2 | 3;
+    isHint?: boolean;
     onPointerDown?: (e: ThreeEvent<PointerEvent>) => void;
     onPointerMove?: (e: ThreeEvent<PointerEvent>) => void;
     onPointerUp?: (e: ThreeEvent<PointerEvent>) => void;
@@ -43,6 +44,7 @@ export const Cubie = ({
     rotation,
     originalPosition,
     cubeSize,
+    isHint,
     onPointerDown,
     onPointerMove,
     onPointerUp
@@ -74,6 +76,15 @@ export const Cubie = ({
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
             />
+            {/* Hint glow effect */}
+            {isHint && (
+                <pointLight
+                    position={[0, 0, 0]}
+                    color="#FFD700"
+                    intensity={2}
+                    distance={2}
+                />
+            )}
         </group>
     );
 };

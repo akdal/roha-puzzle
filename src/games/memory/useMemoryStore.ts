@@ -29,6 +29,7 @@ interface LeaderboardEntry {
     moves: number;
     gridSize: number;
     date: string;
+    hintCount?: number;
 }
 
 interface MemoryState {
@@ -40,6 +41,10 @@ interface MemoryState {
     startTime: number | null;
     isProcessing: boolean; // prevent clicks during animation
     leaderboard: LeaderboardEntry[];
+    // Hint system
+    hintActive: boolean;
+    hintCardIndices: number[]; // indices of cards to highlight
+    hintCount: number;
 }
 
 interface MemoryActions {
@@ -48,6 +53,8 @@ interface MemoryActions {
     flipCard: (index: number) => void;
     checkMatch: () => void;
     scramble: () => void;
+    showHint: () => void;
+    clearHint: () => void;
 }
 
 const createCards = (gridSize: number): Card[] => {
@@ -81,6 +88,9 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
             startTime: null,
             isProcessing: false,
             leaderboard: [],
+            hintActive: false,
+            hintCardIndices: [],
+            hintCount: 0,
 
             initGame: (gridSize?: 4 | 6) => {
                 const size = gridSize ?? get().gridSize;
@@ -92,6 +102,9 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
                     gameStatus: 'IDLE',
                     startTime: null,
                     isProcessing: false,
+                    hintActive: false,
+                    hintCardIndices: [],
+                    hintCount: 0,
                 });
             },
 
@@ -104,6 +117,9 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
                     gameStatus: 'IDLE',
                     startTime: null,
                     isProcessing: false,
+                    hintActive: false,
+                    hintCardIndices: [],
+                    hintCount: 0,
                 });
             },
 
@@ -116,6 +132,9 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
                     gameStatus: 'IDLE',
                     startTime: null,
                     isProcessing: false,
+                    hintActive: false,
+                    hintCardIndices: [],
+                    hintCount: 0,
                 });
             },
 
@@ -168,7 +187,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
                     const time = (Date.now() - state.startTime) / 1000;
                     newLeaderboard = [
                         ...state.leaderboard,
-                        { time, moves: newMoveCount, gridSize: state.gridSize, date: new Date().toISOString() }
+                        { time, moves: newMoveCount, gridSize: state.gridSize, date: new Date().toISOString(), hintCount: state.hintCount }
                     ].sort((a, b) => a.moves - b.moves || a.time - b.time).slice(0, 10);
                 }
 
@@ -179,7 +198,55 @@ export const useMemoryStore = create<MemoryState & MemoryActions>()(
                     gameStatus: allMatched ? 'SOLVED' : 'PLAYING',
                     isProcessing: false,
                     leaderboard: newLeaderboard,
+                    hintActive: false,
+                    hintCardIndices: [],
                 });
+            },
+
+            showHint: () => {
+                const state = get();
+                if (state.gameStatus === 'SOLVED' || state.isProcessing || state.hintActive) return;
+                if (state.flippedCards.length > 0) return; // Don't hint when cards are flipped
+
+                // Find unmatched cards and group by icon
+                const unmatchedByIcon: { [icon: string]: number[] } = {};
+                state.cards.forEach((card, index) => {
+                    if (!card.isMatched && !card.isFlipped) {
+                        if (!unmatchedByIcon[card.icon]) {
+                            unmatchedByIcon[card.icon] = [];
+                        }
+                        unmatchedByIcon[card.icon].push(index);
+                    }
+                });
+
+                // Find a pair (should always exist if game is not solved)
+                let hintPair: number[] = [];
+                for (const indices of Object.values(unmatchedByIcon)) {
+                    if (indices.length >= 2) {
+                        hintPair = [indices[0], indices[1]];
+                        break;
+                    }
+                }
+
+                if (hintPair.length === 2) {
+                    set({
+                        hintActive: true,
+                        hintCardIndices: hintPair,
+                        hintCount: state.hintCount + 1,
+                    });
+
+                    // Auto-clear hint after 2 seconds
+                    setTimeout(() => {
+                        const currentState = get();
+                        if (currentState.hintActive) {
+                            set({ hintActive: false, hintCardIndices: [] });
+                        }
+                    }, 2000);
+                }
+            },
+
+            clearHint: () => {
+                set({ hintActive: false, hintCardIndices: [] });
             },
         }),
         {

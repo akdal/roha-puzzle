@@ -4,13 +4,30 @@ interface PegProps {
     position: [number, number, number];
     height: number;
     isSelected: boolean;
+    isHintSource?: boolean;
+    isHintTarget?: boolean;
     onClick: (e: ThreeEvent<MouseEvent>) => void;
 }
 
-export const Peg = ({ position, height, isSelected, onClick }: PegProps) => {
+export const Peg = ({ position, height, isSelected, isHintSource, isHintTarget, onClick }: PegProps) => {
     const pegRadius = 0.08;
     const baseRadius = 1.4;
     const baseHeight = 0.15;
+
+    // Determine base color based on state
+    const getBaseColor = () => {
+        if (isHintSource) return '#FFD700'; // Gold for source
+        if (isHintTarget) return '#4ADE80'; // Green for target
+        if (isSelected) return '#5C4033';
+        return '#8B4513';
+    };
+
+    const getPoleColor = () => {
+        if (isHintSource) return '#FFA500'; // Orange for source
+        if (isHintTarget) return '#22C55E'; // Green for target
+        if (isSelected) return '#5C4033';
+        return '#A0522D';
+    };
 
     return (
         <group position={position}>
@@ -18,9 +35,11 @@ export const Peg = ({ position, height, isSelected, onClick }: PegProps) => {
             <mesh position={[0, baseHeight / 2, 0]} onClick={onClick} receiveShadow>
                 <cylinderGeometry args={[baseRadius, baseRadius, baseHeight, 32]} />
                 <meshStandardMaterial
-                    color={isSelected ? '#5C4033' : '#8B4513'}
+                    color={getBaseColor()}
                     metalness={0.1}
                     roughness={0.7}
+                    emissive={isHintSource ? '#FFD700' : isHintTarget ? '#4ADE80' : '#000000'}
+                    emissiveIntensity={isHintSource || isHintTarget ? 0.3 : 0}
                 />
             </mesh>
 
@@ -28,9 +47,11 @@ export const Peg = ({ position, height, isSelected, onClick }: PegProps) => {
             <mesh position={[0, baseHeight + height / 2, 0]} onClick={onClick} receiveShadow>
                 <cylinderGeometry args={[pegRadius, pegRadius, height, 16]} />
                 <meshStandardMaterial
-                    color={isSelected ? '#5C4033' : '#A0522D'}
+                    color={getPoleColor()}
                     metalness={0.1}
                     roughness={0.6}
+                    emissive={isHintSource ? '#FFA500' : isHintTarget ? '#22C55E' : '#000000'}
+                    emissiveIntensity={isHintSource || isHintTarget ? 0.2 : 0}
                 />
             </mesh>
         </group>

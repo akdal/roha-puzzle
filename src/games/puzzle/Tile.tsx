@@ -28,6 +28,7 @@ interface TileProps {
     gridSize: number;
     targetPosition: THREE.Vector3;
     onClick: (e: ThreeEvent<MouseEvent>) => void;
+    isHint?: boolean;
 }
 
 export const Tile = ({ number, gridSize, targetPosition, onClick }: TileProps) => {
@@ -93,7 +94,7 @@ export const Tile = ({ number, gridSize, targetPosition, onClick }: TileProps) =
 };
 
 // Separate component for updating text position
-export const TileWithText = ({ number, gridSize, targetPosition, onClick }: TileProps) => {
+export const TileWithText = ({ number, gridSize, targetPosition, onClick, isHint }: TileProps) => {
     const meshRef = useRef<THREE.Mesh>(null);
     const textRef = useRef<THREE.Object3D | null>(null);
     const currentPos = useRef(targetPosition.clone());
@@ -141,6 +142,8 @@ export const TileWithText = ({ number, gridSize, targetPosition, onClick }: Tile
                     color={color}
                     metalness={0.1}
                     roughness={0.3}
+                    emissive={isHint ? '#FFD700' : '#000000'}
+                    emissiveIntensity={isHint ? 0.5 : 0}
                 />
             </mesh>
             <Text
@@ -154,6 +157,15 @@ export const TileWithText = ({ number, gridSize, targetPosition, onClick }: Tile
             >
                 {number}
             </Text>
+            {/* Hint glow effect */}
+            {isHint && (
+                <pointLight
+                    position={[targetPosition.x, targetPosition.y, 0.5]}
+                    color="#FFD700"
+                    intensity={2}
+                    distance={1.5}
+                />
+            )}
         </group>
     );
 };

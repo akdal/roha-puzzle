@@ -17,6 +17,11 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
         scramble,
         leaderboard,
         cards,
+        hintCount,
+        showHint,
+        hintActive,
+        flippedCards,
+        isProcessing,
     } = useMemoryStore();
 
     const [showSettings, setShowSettings] = useState(false);
@@ -82,7 +87,12 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                     <div className="text-2xl mb-2 text-cyan-100">
                         시간: <span className="font-mono text-yellow-300">{timeDisplay}</span>초
                     </div>
-                    <div className="text-xl mb-6 text-cyan-200">횟수: {moveCount}회</div>
+                    <div className="text-xl mb-2 text-cyan-200">횟수: {moveCount}회</div>
+                    {hintCount > 0 && (
+                        <div className="text-purple-400 text-sm mb-4">
+                            💡 힌트 사용: {hintCount}회
+                        </div>
+                    )}
 
                     <div className="flex flex-col gap-3">
                         <button
@@ -127,6 +137,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                                         >
                                             <span>
                                                 {i + 1}. {entry.gridSize}×{entry.gridSize}
+                                                {entry.hintCount ? ` 💡${entry.hintCount}` : ''}
                                             </span>
                                             <span className="font-mono">
                                                 {entry.moves}회 / {entry.time.toFixed(2)}초
@@ -171,9 +182,20 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                         </button>
                         <button
                             onClick={() => initGame()}
-                            className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition"
+                            className="flex-1 py-3 sm:py-4 text-center text-cyan-300 active:bg-cyan-500/10 transition border-r border-cyan-500/20"
                         >
                             <span className="text-xl sm:text-2xl">↺</span>
+                        </button>
+                        <button
+                            onClick={showHint}
+                            disabled={hintActive || isProcessing || flippedCards.length > 0}
+                            className={`flex-1 py-3 sm:py-4 text-center transition ${
+                                hintActive || isProcessing || flippedCards.length > 0
+                                    ? 'text-gray-600 cursor-not-allowed'
+                                    : 'text-yellow-400 active:bg-cyan-500/10'
+                            }`}
+                        >
+                            <span className="text-xl sm:text-2xl">💡</span>
                         </button>
                     </div>
 
@@ -267,6 +289,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                                 >
                                     <span>
                                         {i + 1}. {entry.gridSize}×{entry.gridSize}
+                                        {entry.hintCount ? ` 💡${entry.hintCount}` : ''}
                                     </span>
                                     <span className="font-mono">
                                         {entry.moves}회 - {entry.time.toFixed(2)}초

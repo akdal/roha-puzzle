@@ -15,6 +15,9 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
         setDiskCount,
         initGame,
         leaderboard,
+        hintCount,
+        showHint,
+        hintActive,
     } = useHanoiStore();
 
     const [showSettings, setShowSettings] = useState(false);
@@ -64,6 +67,11 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
                     <div className="text-xl mb-2">
                         횟수: {moveCount} / {minMoves}
                     </div>
+                    {hintCount > 0 && (
+                        <div className="text-purple-500 text-sm mb-2">
+                            💡 힌트 사용: {hintCount}회
+                        </div>
+                    )}
                     {isPerfect && (
                         <div className="text-yellow-500 text-lg mb-4">
                             최소 횟수 달성!
@@ -113,6 +121,7 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
                                         >
                                             <span>
                                                 {i + 1}. {entry.diskCount}개
+                                                {entry.hintCount ? ` 💡${entry.hintCount}` : ''}
                                             </span>
                                             <span className="font-mono">
                                                 {entry.moves}회 / {entry.time.toFixed(2)}초
@@ -158,6 +167,17 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
                             className="flex-1 py-3 sm:py-4 text-center text-gray-300 active:bg-white/10 transition border-l border-white/10"
                         >
                             <span className="text-xl sm:text-2xl">↺</span>
+                        </button>
+                        <button
+                            onClick={showHint}
+                            disabled={hintActive}
+                            className={`flex-1 py-3 sm:py-4 text-center transition border-l border-white/10 ${
+                                hintActive
+                                    ? 'text-gray-600 cursor-not-allowed'
+                                    : 'text-yellow-400 active:bg-white/10'
+                            }`}
+                        >
+                            <span className="text-xl sm:text-2xl">💡</span>
                         </button>
                     </div>
 
@@ -248,6 +268,7 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
                                 >
                                     <span>
                                         {i + 1}. {entry.diskCount}개
+                                        {entry.hintCount ? ` 💡${entry.hintCount}` : ''}
                                     </span>
                                     <span className="font-mono">
                                         {entry.moves}/{getMinMoves(entry.diskCount)} - {entry.time.toFixed(2)}초

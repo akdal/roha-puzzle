@@ -20,6 +20,8 @@ export const HanoiGame = () => {
         animating,
         animatingDisk,
         finishAnimation,
+        hintActive,
+        hintInfo,
     } = useHanoiStore();
 
     const pegHeight = useMemo(() => {
@@ -54,6 +56,8 @@ export const HanoiGame = () => {
                     position={pos}
                     height={pegHeight}
                     isSelected={selectedPeg === index}
+                    isHintSource={hintActive && hintInfo?.fromPeg === index}
+                    isHintTarget={hintActive && hintInfo?.toPeg === index}
                     onClick={(e) => {
                         e.stopPropagation();
                         selectPeg(index);
@@ -81,6 +85,8 @@ export const HanoiGame = () => {
 
                     const isTopDisk = stackIndex === peg.length - 1;
                     const isSelected = selectedPeg === pegIndex && isTopDisk;
+                    const isHintDisk = hintActive && hintInfo?.fromPeg === pegIndex &&
+                                       hintInfo?.disk === diskSize && isTopDisk;
 
                     return (
                         <Disk
@@ -90,6 +96,7 @@ export const HanoiGame = () => {
                             position={position}
                             isSelected={isSelected}
                             isAnimating={false}
+                            isHintDisk={isHintDisk}
                         />
                     );
                 })

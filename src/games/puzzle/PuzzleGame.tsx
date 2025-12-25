@@ -3,7 +3,7 @@ import { usePuzzleStore } from './usePuzzleStore';
 import { TileWithText } from './Tile';
 
 export const PuzzleGame = () => {
-    const { tiles, gridSize, moveTile } = usePuzzleStore();
+    const { tiles, gridSize, moveTile, hintActive, hintTileIndex } = usePuzzleStore();
 
     const tileSize = 2.8 / gridSize;
     const boardSize = 3;
@@ -54,6 +54,7 @@ export const PuzzleGame = () => {
                             e.stopPropagation();
                             moveTile(index);
                         }}
+                        isHint={hintActive && hintTileIndex === index}
                     />
                 );
             })}

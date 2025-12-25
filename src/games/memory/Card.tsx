@@ -7,12 +7,13 @@ interface CardProps {
     icon: string;
     isFlipped: boolean;
     isMatched: boolean;
+    isHint?: boolean;
     position: [number, number, number];
     onClick: () => void;
     gridSize: number;
 }
 
-export const Card = ({ icon, isFlipped, isMatched, position, onClick, gridSize }: CardProps) => {
+export const Card = ({ icon, isFlipped, isMatched, isHint, position, onClick, gridSize }: CardProps) => {
     const meshRef = useRef<Mesh>(null);
     const targetRotation = isFlipped || isMatched ? Math.PI : 0;
 
@@ -98,6 +99,16 @@ export const Card = ({ icon, isFlipped, isMatched, position, onClick, gridSize }
                     color="#4ade80"
                     intensity={0.5}
                     distance={1}
+                />
+            )}
+
+            {/* Hint glow effect - yellow pulsing glow */}
+            {isHint && !isMatched && !isFlipped && (
+                <pointLight
+                    position={[0, 0, 0.5]}
+                    color="#FFD700"
+                    intensity={1.5}
+                    distance={1.5}
                 />
             )}
         </group>

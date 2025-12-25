@@ -6,6 +6,7 @@ interface LeaderboardEntry {
     moves: number;
     gridSize: number;
     date: string;
+    hintCount?: number;
 }
 
 interface PuzzleState {
@@ -22,6 +23,11 @@ interface PuzzleState {
     // Animation
     animatingTile: number | null; // index of tile being animated
 
+    // Hint system
+    hintActive: boolean;
+    hintTileIndex: number | null; // index of tile to highlight (tile to move)
+    hintCount: number;
+
     // Settings & records
     leaderboard: LeaderboardEntry[];
 }
@@ -31,6 +37,8 @@ interface PuzzleActions {
     setGridSize: (size: 2 | 3 | 4) => void;
     moveTile: (index: number) => void;
     scramble: () => void;
+    showHint: () => void;
+    clearHint: () => void;
 }
 
 const createSolvedState = (gridSize: number): number[] => {
@@ -60,6 +68,61 @@ const getNeighbors = (index: number, gridSize: number): number[] => {
     if (col < gridSize - 1) neighbors.push(index + 1); // Right
 
     return neighbors;
+};
+
+// BFS solver to find the next move towards solution
+const findNextMove = (tiles: number[], emptyIndex: number, gridSize: number, maxDepth: number = 30): number | null => {
+    const target = createSolvedState(gridSize);
+    const targetKey = target.join(',');
+
+    if (tiles.join(',') === targetKey) return null; // Already solved
+
+    interface State {
+        tiles: number[];
+        emptyIndex: number;
+        path: number[]; // Array of tile indices that were moved
+    }
+
+    const visited = new Set<string>();
+    const queue: State[] = [{ tiles: [...tiles], emptyIndex, path: [] }];
+    visited.add(tiles.join(','));
+
+    while (queue.length > 0) {
+        const current = queue.shift()!;
+
+        // Limit search depth
+        if (current.path.length >= maxDepth) continue;
+
+        const neighbors = getNeighbors(current.emptyIndex, gridSize);
+
+        for (const neighborIndex of neighbors) {
+            const newTiles = [...current.tiles];
+            newTiles[current.emptyIndex] = newTiles[neighborIndex];
+            newTiles[neighborIndex] = 0;
+
+            const key = newTiles.join(',');
+
+            if (visited.has(key)) continue;
+            visited.add(key);
+
+            const newPath = [...current.path, neighborIndex];
+
+            if (key === targetKey) {
+                // Found solution! Return the first move
+                return newPath[0];
+            }
+
+            queue.push({
+                tiles: newTiles,
+                emptyIndex: neighborIndex,
+                path: newPath,
+            });
+        }
+    }
+
+    // No solution found within depth limit - return any valid move
+    const neighbors = getNeighbors(emptyIndex, gridSize);
+    return neighbors.length > 0 ? neighbors[0] : null;
 };
 
 // Fisher-Yates shuffle with solvability check
@@ -93,6 +156,9 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
             gameStatus: 'IDLE',
             startTime: null,
             animatingTile: null,
+            hintActive: false,
+            hintTileIndex: null,
+            hintCount: 0,
             leaderboard: [],
 
             initGame: (gridSize?: 2 | 3 | 4) => {
@@ -105,6 +171,9 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
                     gameStatus: 'IDLE',
                     startTime: null,
                     animatingTile: null,
+                    hintActive: false,
+                    hintTileIndex: null,
+                    hintCount: 0,
                 });
             },
 
@@ -116,6 +185,9 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
                     moveCount: 0,
                     gameStatus: 'IDLE',
                     startTime: null,
+                    hintActive: false,
+                    hintTileIndex: null,
+                    hintCount: 0,
                 });
             },
 
@@ -129,6 +201,9 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
                     gameStatus: 'IDLE',
                     startTime: null,
                     animatingTile: null,
+                    hintActive: false,
+                    hintTileIndex: null,
+                    hintCount: 0,
                 });
             },
 
@@ -159,7 +234,7 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
                     const time = (Date.now() - startTime) / 1000;
                     newLeaderboard = [
                         ...state.leaderboard,
-                        { time, moves: newMoveCount, gridSize, date: new Date().toISOString() }
+                        { time, moves: newMoveCount, gridSize, date: new Date().toISOString(), hintCount: state.hintCount }
                     ].sort((a, b) => a.moves - b.moves || a.time - b.time).slice(0, 10);
                 }
 
@@ -170,7 +245,38 @@ export const usePuzzleStore = create<PuzzleState & PuzzleActions>()(
                     gameStatus: solved ? 'SOLVED' : 'PLAYING',
                     startTime: isFirstMove ? Date.now() : state.startTime,
                     leaderboard: newLeaderboard,
+                    hintActive: false,
+                    hintTileIndex: null,
                 });
+            },
+
+            showHint: () => {
+                const state = get();
+                if (state.gameStatus === 'SOLVED' || state.hintActive) return;
+
+                // Use BFS to find the next best move
+                const maxDepth = state.gridSize === 2 ? 20 : state.gridSize === 3 ? 31 : 25;
+                const hintTileIndex = findNextMove(state.tiles, state.emptyIndex, state.gridSize, maxDepth);
+
+                if (hintTileIndex !== null) {
+                    set({
+                        hintActive: true,
+                        hintTileIndex,
+                        hintCount: state.hintCount + 1,
+                    });
+
+                    // Auto-clear hint after 2 seconds
+                    setTimeout(() => {
+                        const currentState = get();
+                        if (currentState.hintActive) {
+                            set({ hintActive: false, hintTileIndex: null });
+                        }
+                    }, 2000);
+                }
+            },
+
+            clearHint: () => {
+                set({ hintActive: false, hintTileIndex: null });
             },
         }),
         {

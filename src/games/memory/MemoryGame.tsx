@@ -2,7 +2,7 @@ import { useMemoryStore } from './useMemoryStore';
 import { Card } from './Card';
 
 export const MemoryGame = () => {
-    const { cards, gridSize, flipCard } = useMemoryStore();
+    const { cards, gridSize, flipCard, hintActive, hintCardIndices } = useMemoryStore();
 
     const cardSpacing = gridSize === 4 ? 1.1 : 0.75;
 
@@ -36,6 +36,7 @@ export const MemoryGame = () => {
                     icon={card.icon}
                     isFlipped={card.isFlipped}
                     isMatched={card.isMatched}
+                    isHint={hintActive && hintCardIndices.includes(index)}
                     position={getPosition(index)}
                     onClick={() => flipCard(index)}
                     gridSize={gridSize}
