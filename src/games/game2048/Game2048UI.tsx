@@ -40,6 +40,25 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
     if (gameStatus === 'WON') {
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
+                {/* Gold stars decoration */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {[...Array(15)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute animate-pulse"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                fontSize: `${Math.random() * 20 + 12}px`,
+                                animationDelay: `${Math.random() * 2}s`,
+                                opacity: 0.5,
+                            }}
+                        >
+                            {['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)]}
+                        </div>
+                    ))}
+                </div>
+
                 <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20">
                     <div className="text-4xl mb-2">🎉</div>
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300 mb-2">
@@ -90,6 +109,24 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
     if (gameStatus === 'LOST') {
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
+                {/* Subtle snowflakes decoration */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {[...Array(10)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute text-white/10 animate-pulse"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                fontSize: `${Math.random() * 15 + 8}px`,
+                                animationDelay: `${Math.random() * 2}s`,
+                            }}
+                        >
+                            ❄️
+                        </div>
+                    ))}
+                </div>
+
                 <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20">
                     <div className="text-4xl mb-2">😅</div>
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300 mb-2">

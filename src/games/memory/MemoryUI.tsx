@@ -88,7 +88,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                 </div>
 
                 <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20">
-                    <div className="text-4xl mb-2">{isNewRecord ? '🏆' : '🎄'}</div>
+                    <div className="text-4xl mb-2">{isNewRecord ? '🏆' : '🃏'}</div>
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300 mb-2">
                         {isNewRecord ? '새로운 기록!' : '잘했어요!'}
                     </h1>

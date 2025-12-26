@@ -59,6 +59,25 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
 
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/90 to-[#1a3a4a]/90 backdrop-blur-sm">
+                {/* Christmas lights decoration */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {[...Array(20)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute animate-pulse"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                fontSize: `${Math.random() * 15 + 10}px`,
+                                animationDelay: `${Math.random() * 2}s`,
+                                opacity: 0.4,
+                            }}
+                        >
+                            {['✨', '🌟', '💫', '⭐'][Math.floor(Math.random() * 4)]}
+                        </div>
+                    ))}
+                </div>
+
                 <div className="bg-gradient-to-b from-[#1a3a4a] to-[#0f2937] p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full border border-cyan-500/20">
                     <div className="text-4xl mb-2">{isNewRecord ? '🏆' : '🎄'}</div>
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-yellow-300 to-green-400 mb-2">
