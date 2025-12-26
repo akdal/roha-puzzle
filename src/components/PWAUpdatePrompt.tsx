@@ -24,14 +24,9 @@ export const PWAUpdatePrompt = () => {
             <div className="pointer-events-auto bg-gradient-to-r from-[#1a3a4a] to-[#0f2937] border border-cyan-500/30 rounded-2xl shadow-2xl p-4 max-w-sm w-full backdrop-blur-md animate-slide-up">
                 <div className="flex items-center gap-3">
                     <div className="text-3xl">🎁</div>
-                    <div className="flex-1">
-                        <p className="text-cyan-100 font-bold text-sm">
-                            "로하 퍼즐" 업데이트 됐어요!
-                        </p>
-                        <p className="text-cyan-400/70 text-xs mt-0.5">
-                            새로운 기능이 추가됐어요
-                        </p>
-                    </div>
+                    <p className="text-cyan-100 font-bold text-sm">
+                        "로하 퍼즐" 업데이트 됐어요!
+                    </p>
                 </div>
                 <div className="flex gap-2 mt-3">
                     <button
