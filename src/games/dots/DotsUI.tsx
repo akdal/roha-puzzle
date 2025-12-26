@@ -47,22 +47,21 @@ export const DotsUI = ({ onBack }: DotsUIProps) => {
 
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
-                {/* Dots decoration */}
+                {/* Snowflakes decoration */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(15)].map((_, i) => (
+                    {[...Array(12)].map((_, i) => (
                         <div
                             key={i}
-                            className="absolute rounded-full animate-pulse"
+                            className="absolute text-white/15 animate-pulse"
                             style={{
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
-                                width: `${Math.random() * 12 + 6}px`,
-                                height: `${Math.random() * 12 + 6}px`,
-                                backgroundColor: i % 2 === 0 ? '#60a5fa' : '#f472b6',
-                                opacity: 0.3,
+                                fontSize: `${Math.random() * 16 + 10}px`,
                                 animationDelay: `${Math.random() * 2}s`,
                             }}
-                        />
+                        >
+                            ❄️
+                        </div>
                     ))}
                 </div>
 
@@ -92,26 +91,12 @@ export const DotsUI = ({ onBack }: DotsUIProps) => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3">
-                        <button
-                            onClick={() => initGame()}
-                            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg"
-                        >
-                            🎮 다시 하기
-                        </button>
-                        <button
-                            onClick={() => setShowLeaderboard(true)}
-                            className="text-cyan-300 hover:text-cyan-100"
-                        >
-                            기록 보기
-                        </button>
-                        <button
-                            onClick={onBack}
-                            className="text-cyan-400/60 hover:text-cyan-300"
-                        >
-                            메뉴로 돌아가기
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => initGame()}
+                        className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg mt-2"
+                    >
+                        🎮 다시 하기
+                    </button>
                 </div>
 
                 {showLeaderboard && (

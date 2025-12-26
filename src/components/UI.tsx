@@ -64,14 +64,14 @@ export const UI = ({ onBack }: UIProps) => {
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
                 {/* Snowflakes decoration */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(15)].map((_, i) => (
+                    {[...Array(12)].map((_, i) => (
                         <div
                             key={i}
-                            className="absolute text-white/20 animate-pulse"
+                            className="absolute text-white/15 animate-pulse"
                             style={{
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
-                                fontSize: `${Math.random() * 20 + 10}px`,
+                                fontSize: `${Math.random() * 16 + 10}px`,
                                 animationDelay: `${Math.random() * 2}s`,
                             }}
                         >
@@ -104,20 +104,12 @@ export const UI = ({ onBack }: UIProps) => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3">
-                        <button
-                            onClick={() => scramble()}
-                            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg"
-                        >
-                            🎮 새 게임
-                        </button>
-                        <button
-                            onClick={() => setShowLeaderboard(true)}
-                            className="text-cyan-300 hover:text-cyan-100"
-                        >
-                            기록 보기
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => scramble()}
+                        className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg mt-2"
+                    >
+                        🎮 새 게임
+                    </button>
                 </div>
 
                 {showLeaderboard && (

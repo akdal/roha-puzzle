@@ -77,22 +77,21 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
 
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/90 to-[#1a3a4a]/90 backdrop-blur-sm">
-                {/* Color bubbles decoration */}
+                {/* Snowflakes decoration */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     {[...Array(12)].map((_, i) => (
                         <div
                             key={i}
-                            className="absolute rounded-full animate-pulse"
+                            className="absolute text-white/15 animate-pulse"
                             style={{
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
-                                width: `${Math.random() * 30 + 15}px`,
-                                height: `${Math.random() * 30 + 15}px`,
-                                backgroundColor: ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181'][Math.floor(Math.random() * 5)],
-                                opacity: 0.2,
+                                fontSize: `${Math.random() * 16 + 10}px`,
                                 animationDelay: `${Math.random() * 2}s`,
                             }}
-                        />
+                        >
+                            ❄️
+                        </div>
                     ))}
                 </div>
 
@@ -153,7 +152,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                         </div>
                     )}
 
-                    <div className="flex flex-col gap-3 mt-6">
+                    <div className="flex flex-col gap-3 mt-4">
                         <button
                             onClick={() => nextLevel()}
                             className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg"
@@ -165,12 +164,6 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
                             className="text-cyan-300 hover:text-cyan-100"
                         >
                             이 레벨 다시하기
-                        </button>
-                        <button
-                            onClick={onBack}
-                            className="text-cyan-400/60 hover:text-cyan-300"
-                        >
-                            메뉴로 돌아가기
                         </button>
                     </div>
                 </div>

@@ -40,21 +40,20 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
     if (gameStatus === 'WON') {
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
-                {/* Gold stars decoration */}
+                {/* Snowflakes decoration */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(15)].map((_, i) => (
+                    {[...Array(12)].map((_, i) => (
                         <div
                             key={i}
-                            className="absolute animate-pulse"
+                            className="absolute text-white/15 animate-pulse"
                             style={{
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
-                                fontSize: `${Math.random() * 20 + 12}px`,
+                                fontSize: `${Math.random() * 16 + 10}px`,
                                 animationDelay: `${Math.random() * 2}s`,
-                                opacity: 0.5,
                             }}
                         >
-                            {['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)]}
+                            ❄️
                         </div>
                     ))}
                 </div>
@@ -80,7 +79,7 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3 mt-2">
                         <button
                             onClick={continueGame}
                             className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-lg rounded-full font-bold hover:from-amber-400 hover:to-yellow-400 transition shadow-lg"
@@ -93,12 +92,6 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                         >
                             새 게임
                         </button>
-                        <button
-                            onClick={onBack}
-                            className="text-cyan-400/60 hover:text-cyan-300"
-                        >
-                            메뉴로 돌아가기
-                        </button>
                     </div>
                 </div>
             </div>
@@ -109,16 +102,16 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
     if (gameStatus === 'LOST') {
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
-                {/* Subtle snowflakes decoration */}
+                {/* Snowflakes decoration */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(10)].map((_, i) => (
+                    {[...Array(12)].map((_, i) => (
                         <div
                             key={i}
-                            className="absolute text-white/10 animate-pulse"
+                            className="absolute text-white/15 animate-pulse"
                             style={{
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
-                                fontSize: `${Math.random() * 15 + 8}px`,
+                                fontSize: `${Math.random() * 16 + 10}px`,
                                 animationDelay: `${Math.random() * 2}s`,
                             }}
                         >
@@ -148,26 +141,12 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3">
-                        <button
-                            onClick={() => initGame()}
-                            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg"
-                        >
-                            🎮 다시 하기
-                        </button>
-                        <button
-                            onClick={() => setShowLeaderboard(true)}
-                            className="text-cyan-300 hover:text-cyan-100"
-                        >
-                            기록 보기
-                        </button>
-                        <button
-                            onClick={onBack}
-                            className="text-cyan-400/60 hover:text-cyan-300"
-                        >
-                            메뉴로 돌아가기
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => initGame()}
+                        className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg mt-2"
+                    >
+                        🎮 다시 하기
+                    </button>
                 </div>
 
                 {showLeaderboard && (
