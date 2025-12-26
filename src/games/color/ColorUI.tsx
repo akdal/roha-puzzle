@@ -82,7 +82,7 @@ export const ColorUI = ({ onBack }: ColorUIProps) => {
     const currentHex = rgbToHex(currentColor);
 
     // Solved screen
-    if (gameStatus === 'SOLVED') {
+    if (showModal) {
         const sameRecords = leaderboard.filter(e => e.level === level && e.difficulty === difficulty);
         const isNewRecord = sameRecords.length <= 1 ||
             (sameRecords.length > 1 && accuracy > sameRecords[1].accuracy);

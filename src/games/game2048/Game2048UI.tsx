@@ -21,6 +21,7 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
 
     const [showSettings, setShowSettings] = useState(false);
     const [showLeaderboard, setShowLeaderboard] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { celebrate } = useCelebration();
     const celebratedRef = useRef(false);
 
@@ -36,8 +37,20 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
         }
     }, [gameStatus, celebrate]);
 
+    // Delayed modal when won
+    useEffect(() => {
+        if (gameStatus === 'WON') {
+            const timer = setTimeout(() => {
+                setShowModal(true);
+            }, 1200); // 1.2 second delay
+            return () => clearTimeout(timer);
+        } else {
+            setShowModal(false);
+        }
+    }, [gameStatus]);
+
     // Won screen
-    if (gameStatus === 'WON') {
+    if (showModal) {
         return (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#0a1628]/95 to-[#1a3a4a]/95 backdrop-blur-sm">
                 {/* Snowflakes decoration */}

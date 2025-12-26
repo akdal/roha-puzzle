@@ -28,6 +28,7 @@ export const UI = ({ onBack }: UIProps) => {
     const [showSettings, setShowSettings] = useState(false);
     const [now, setNow] = useState(() => Date.now());
     const [hideTimer, setHideTimer] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { celebrate } = useCelebration();
     const celebratedRef = useRef(false);
 
@@ -39,6 +40,18 @@ export const UI = ({ onBack }: UIProps) => {
             celebratedRef.current = false;
         }
     }, [gameStatus, celebrate]);
+
+    // Delayed modal when solved
+    useEffect(() => {
+        if (gameStatus === 'SOLVED') {
+            const timer = setTimeout(() => {
+                setShowModal(true);
+            }, 1200); // 1.2 second delay
+            return () => clearTimeout(timer);
+        } else {
+            setShowModal(false);
+        }
+    }, [gameStatus]);
 
     useEffect(() => {
         if (!isSolving || !startTime) return;
@@ -53,7 +66,7 @@ export const UI = ({ onBack }: UIProps) => {
         : ((now - startTime) / 1000).toFixed(2);
 
     // Solved screen - Winter theme
-    if (gameStatus === 'SOLVED') {
+    if (showModal) {
         const currentTime = startTime ? (now - startTime) / 1000 : 0;
 
         // Check if this is a new record

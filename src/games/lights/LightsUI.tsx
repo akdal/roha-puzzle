@@ -64,7 +64,7 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
             : ((now - startTime) / 1000).toFixed(2);
 
     // Solved screen
-    if (gameStatus === 'SOLVED') {
+    if (showModal) {
         const currentTime = startTime ? (now - startTime) / 1000 : 0;
         const sameRecords = leaderboard.filter(e => e.gridSize === gridSize && e.level === level);
         const isNewRecord = sameRecords.length <= 1 ||

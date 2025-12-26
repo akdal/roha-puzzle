@@ -51,7 +51,7 @@ export const DotsUI = ({ onBack }: DotsUIProps) => {
     }, [gameStatus]);
 
     // Finished screen
-    if (gameStatus === 'FINISHED') {
+    if (showModal) {
         const winnerText = winner === 'draw'
             ? '무승부!'
             : winner === 1

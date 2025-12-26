@@ -25,6 +25,7 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [now, setNow] = useState(() => Date.now());
     const [hideTimer, setHideTimer] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { celebrate } = useCelebration();
     const celebratedRef = useRef(false);
 
@@ -38,6 +39,18 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
             celebratedRef.current = false;
         }
     }, [gameStatus, celebrate, moveCount, diskCount]);
+
+    // Delayed modal when solved
+    useEffect(() => {
+        if (gameStatus === 'SOLVED') {
+            const timer = setTimeout(() => {
+                setShowModal(true);
+            }, 1200); // 1.2 second delay
+            return () => clearTimeout(timer);
+        } else {
+            setShowModal(false);
+        }
+    }, [gameStatus]);
 
     useEffect(() => {
         if (gameStatus !== 'PLAYING' || !startTime) return;
@@ -55,7 +68,7 @@ export const HanoiUI = ({ onBack }: HanoiUIProps) => {
     const minMoves = getMinMoves(diskCount);
 
     // Solved screen - Winter theme
-    if (gameStatus === 'SOLVED') {
+    if (showModal) {
         const isPerfect = moveCount === minMoves;
         const currentTime = startTime ? (now - startTime) / 1000 : 0;
 
