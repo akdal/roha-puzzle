@@ -90,7 +90,7 @@ export const Game2048UI = ({ onBack }: Game2048UIProps) => {
                             onClick={() => initGame()}
                             className="text-cyan-300 hover:text-cyan-100"
                         >
-                            새 게임
+                            🎮 다시 하기
                         </button>
                     </div>
                 </div>

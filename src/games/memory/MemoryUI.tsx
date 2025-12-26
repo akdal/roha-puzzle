@@ -28,6 +28,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [now, setNow] = useState(() => Date.now());
     const [hideTimer, setHideTimer] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { celebrate } = useCelebration();
     const celebratedRef = useRef(false);
 
@@ -45,6 +46,18 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
         }
     }, [gameStatus, celebrate]);
 
+    // Delayed modal when solved
+    useEffect(() => {
+        if (gameStatus === 'SOLVED') {
+            const timer = setTimeout(() => {
+                setShowModal(true);
+            }, 1200); // 1.2 second delay
+            return () => clearTimeout(timer);
+        } else {
+            setShowModal(false);
+        }
+    }, [gameStatus]);
+
     useEffect(() => {
         if (gameStatus !== 'PLAYING' || !startTime) return;
         const interval = setInterval(() => {
@@ -59,7 +72,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
             : ((now - startTime) / 1000).toFixed(2);
 
     // Solved screen with winter theme
-    if (gameStatus === 'SOLVED') {
+    if (showModal) {
         const currentTime = startTime ? (now - startTime) / 1000 : 0;
 
         // Check if this is a new record (best time for same grid size)
@@ -120,7 +133,7 @@ export const MemoryUI = ({ onBack }: MemoryUIProps) => {
                         onClick={() => scramble()}
                         className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg mt-2"
                     >
-                        🎮 새 게임
+                        🎮 다시 하기
                     </button>
                 </div>
 

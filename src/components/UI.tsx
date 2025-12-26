@@ -108,7 +108,7 @@ export const UI = ({ onBack }: UIProps) => {
                         onClick={() => scramble()}
                         className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg rounded-full font-bold hover:from-cyan-400 hover:to-blue-400 transition shadow-lg mt-2"
                     >
-                        🎮 새 게임
+                        🎮 다시 하기
                     </button>
                 </div>
 

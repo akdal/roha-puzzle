@@ -24,6 +24,7 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [now, setNow] = useState(() => Date.now());
     const [hideTimer, setHideTimer] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { celebrate } = useCelebration();
     const celebratedRef = useRef(false);
 
@@ -36,6 +37,18 @@ export const LightsUI = ({ onBack }: LightsUIProps) => {
             celebratedRef.current = false;
         }
     }, [gameStatus, celebrate]);
+
+    // Delayed modal when solved
+    useEffect(() => {
+        if (gameStatus === 'SOLVED') {
+            const timer = setTimeout(() => {
+                setShowModal(true);
+            }, 1200); // 1.2 second delay
+            return () => clearTimeout(timer);
+        } else {
+            setShowModal(false);
+        }
+    }, [gameStatus]);
 
     useEffect(() => {
         if (gameStatus !== 'PLAYING' || !startTime) return;

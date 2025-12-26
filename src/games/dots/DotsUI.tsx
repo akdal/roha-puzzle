@@ -24,6 +24,7 @@ export const DotsUI = ({ onBack }: DotsUIProps) => {
 
     const [showSettings, setShowSettings] = useState(false);
     const [showLeaderboard, setShowLeaderboard] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { celebrate } = useCelebration();
     const celebratedRef = useRef(false);
 
@@ -36,6 +37,18 @@ export const DotsUI = ({ onBack }: DotsUIProps) => {
             celebratedRef.current = false;
         }
     }, [gameStatus, celebrate]);
+
+    // Delayed modal when finished
+    useEffect(() => {
+        if (gameStatus === 'FINISHED') {
+            const timer = setTimeout(() => {
+                setShowModal(true);
+            }, 1200); // 1.2 second delay
+            return () => clearTimeout(timer);
+        } else {
+            setShowModal(false);
+        }
+    }, [gameStatus]);
 
     // Finished screen
     if (gameStatus === 'FINISHED') {
